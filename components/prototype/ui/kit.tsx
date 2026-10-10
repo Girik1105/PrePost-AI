@@ -43,12 +43,16 @@ export function ScreenBody({
   scrollRef?: React.Ref<HTMLDivElement>;
 }) {
   return (
-    <div
-      ref={scrollRef}
-      className={`no-scrollbar absolute inset-0 overflow-y-auto overscroll-contain pt-[54px] ${tabbar ? "pb-[96px]" : "pb-[40px]"} ${className}`}
-    >
-      {children}
-    </div>
+    <>
+      <div
+        ref={scrollRef}
+        className={`no-scrollbar absolute inset-0 overflow-y-auto overscroll-contain pt-[54px] ${tabbar ? "pb-[96px]" : "pb-[40px]"} ${className}`}
+      >
+        {children}
+      </div>
+      {/* frosted strip behind the status bar so content never collides with it */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-[54px] bg-[#F6F2EA]/85 backdrop-blur-xl" aria-hidden />
+    </>
   );
 }
 
@@ -80,7 +84,10 @@ export function NavBar({
   const { back } = useProto();
   const color = tone === "light" ? "#FFFFFF" : APP.navy;
   return (
-    <div className="relative flex h-[44px] items-center justify-between px-2">
+    <div
+      className="sticky top-[54px] z-20 flex h-[44px] items-center justify-between px-2 backdrop-blur-xl"
+      style={{ background: tone === "light" ? "transparent" : "rgba(246,242,234,0.85)" }}
+    >
       <button
         type="button"
         onClick={onBack ?? back}

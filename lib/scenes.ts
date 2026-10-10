@@ -34,6 +34,7 @@ export interface Detection {
   reason: string;
   fix: Fix;
   box?: Box; // metadata findings have no box
+  chipBelow?: boolean; // draw the label under the box when neighbors are crowded
 }
 
 export interface Scene {
@@ -76,6 +77,7 @@ export const SCENES: Record<SceneId, Scene> = {
       },
       {
         id: "school-crest",
+        chipBelow: true,
         label: "Uniform crest",
         chip: "Crest",
         category: "Child safety",
@@ -224,6 +226,7 @@ export const SCENES: Record<SceneId, Scene> = {
       },
       {
         id: "coffee-pass",
+        chipBelow: true,
         label: "Name and booking code",
         chip: "Booking code",
         category: "Identity",
@@ -233,6 +236,7 @@ export const SCENES: Record<SceneId, Scene> = {
       },
       {
         id: "coffee-qr",
+        chipBelow: true,
         label: "Boarding pass QR code",
         chip: "QR code",
         category: "Identity",

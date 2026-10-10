@@ -19,6 +19,7 @@ function Kbd({ children }: { children: React.ReactNode }) {
 function Controls({ sectionRef }: { sectionRef: React.RefObject<HTMLElement> }) {
   const { demo, reset } = useProto();
   const [inView, setInView] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const total = demo.steps.length;
   const current = demo.steps[demo.step];
 
@@ -34,6 +35,8 @@ function Controls({ sectionRef }: { sectionRef: React.RefObject<HTMLElement> }) 
   useEffect(() => {
     if (!inView) return;
     const onKey = (e: KeyboardEvent) => {
+      // Two copies of the controls exist (desktop and mobile layout). Only the visible one listens.
+      if (!rootRef.current?.offsetParent) return;
       const t = e.target as HTMLElement;
       if (t.closest("input, textarea, [contenteditable=true], [role=slider]") || e.metaKey || e.ctrlKey || e.altKey) return;
       const k = e.key.toLowerCase();
@@ -51,15 +54,15 @@ function Controls({ sectionRef }: { sectionRef: React.RefObject<HTMLElement> }) 
   }, [inView, demo]);
 
   return (
-    <div className="flex w-full max-w-xl flex-col">
+    <div ref={rootRef} className="flex w-full max-w-xl flex-col">
       {!demo.active ? (
         <div>
           <div className="flex items-end gap-4">
-            <Image src="/assets/brownie-camera.webp" alt="" width={110} height={150} className="h-[116px] w-auto animate-bob motion-reduce:animate-none" />
+            <Image src="/assets/brownie-camera.webp" alt="" width={110} height={150} className="h-[96px] w-auto sm:h-[116px] animate-bob motion-reduce:animate-none" />
             <button
               type="button"
               onClick={demo.start}
-              className="mb-3 inline-flex items-center gap-2.5 rounded-full bg-compassion px-7 py-4 text-lg font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5 motion-reduce:transition-none"
+              className="mb-3 inline-flex items-center gap-2.5 whitespace-nowrap rounded-full bg-compassion px-5 py-3.5 text-base font-semibold sm:px-7 sm:py-4 sm:text-lg text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5 motion-reduce:transition-none"
             >
               <Play className="h-5 w-5 fill-current" aria-hidden />
               Play the 2-minute demo
@@ -181,7 +184,7 @@ export default function PrototypeSection() {
       <Image src="/assets/cloud-b.webp" alt="" width={500} height={130} className="pointer-events-none absolute -right-20 bottom-16 w-[420px] opacity-50" aria-hidden />
 
       <ProtoProvider>
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-20">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-20">
           <div className="order-2 mx-auto w-full max-w-[340px] lg:order-1">
             <PhoneScreens />
           </div>
@@ -190,9 +193,15 @@ export default function PrototypeSection() {
             <h2 id="demo-title" className="mt-3 font-display text-5xl font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl">
               Try it.
             </h2>
-            <p className="mb-8 mt-4 max-w-lg text-lg leading-relaxed text-muted">
+            <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted lg:mb-8">
               This is SafePost on a phone. Watch the guided story, or take it for a spin yourself.
             </p>
+            <div className="hidden lg:block">
+              <Controls sectionRef={ref} />
+            </div>
+          </div>
+          {/* On small screens the controls sit under the phone so captions and screen stay close. */}
+          <div className="order-3 lg:hidden">
             <Controls sectionRef={ref} />
           </div>
         </div>

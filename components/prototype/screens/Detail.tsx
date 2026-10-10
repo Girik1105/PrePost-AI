@@ -120,8 +120,11 @@ export default function Detail() {
                   <>
                     <span aria-hidden>·</span>
                     <MapPin className="h-3 w-3" aria-hidden />
-                    <span className={stripped ? "line-through" : ""}>{scene.location}</span>
-                    {stripped && <span style={{ color: APP.sageDeep }}>removed</span>}
+                    {stripped ? (
+                      <span className="font-medium" style={{ color: APP.sageDeep }}>Location removed</span>
+                    ) : (
+                      <span>{scene.location}</span>
+                    )}
                   </>
                 )}
               </p>

@@ -125,13 +125,9 @@ export default function Hero() {
           >
             <Image src="/assets/ink-drop.webp" alt="" width={374} height={624} className="h-auto w-full" />
           </motion.div>
-          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-card/80 px-3.5 py-1.5 text-sm font-medium text-ink/80 shadow-soft backdrop-blur">
-            <span className="h-2 w-2 rounded-full bg-integrity" aria-hidden />
-            A pre-post safety check for your photos
-          </p>
           <h1
             id="hero-title"
-            className="mt-6 text-balance font-display text-[2.55rem] font-medium leading-[1.02] tracking-tight text-ink [text-shadow:0_1px_18px_rgb(var(--paper)/0.9)] sm:text-6xl lg:text-7xl"
+            className="text-balance font-display text-[2.55rem] font-medium leading-[1.02] tracking-tight text-ink [text-shadow:0_1px_18px_rgb(var(--paper)/0.9)] sm:text-6xl lg:text-7xl"
           >
             Everything posted online is <InkUnderline>ink.</InkUnderline>
           </h1>

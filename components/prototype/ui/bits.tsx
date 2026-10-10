@@ -136,7 +136,7 @@ export function DetectionOverlay({
       {boxed.map((d, i) => {
         const b = d.box!;
         const open = !activeIds || activeIds.includes(d.id);
-        const above = b.y > 26;
+        const above = b.y > 26 && !d.chipBelow;
         const left = Math.min(Math.max((b.x / VIEWBOX.w) * 100, 1), 72);
         return (
           <motion.span

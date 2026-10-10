@@ -37,3 +37,6 @@ next-env.d.ts
 
 # raw generated art
 /.raw-assets
+
+# playwright-cli output
+/.playwright-cli

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Hand, Pause, Play, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import LiveScan from "./LiveScan";
 import PhoneScreens from "./PhoneScreens";
 import { ProtoProvider, useProto } from "./PrototypeController";
 
@@ -187,6 +188,7 @@ export default function PrototypeSection() {
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-20">
           <div className="order-2 mx-auto w-full max-w-[340px] lg:order-1">
             <PhoneScreens />
+            <LiveScan />
           </div>
           <div className="order-1 lg:order-2">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-compassion-deep">The prototype</p>

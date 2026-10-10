@@ -45,3 +45,7 @@ The keys only work while the demo section is on screen. Tapping the phone pauses
 - No real photos of children. The private-moment example is only a blurred placeholder card.
 - Brands are invented (Mesa Bank, Snapline, Lincoln Oaks Elementary).
 - Any statistic must be checked before demo day. Search the code for `TODO: verify source`.
+
+## Optional live mode
+
+Put an Anthropic API key in `.env.local` as `VISION_API_KEY=...` (and add it to the Vercel project settings for production). A **Try your own photo** button then shows up under the phone. The browser redraws the photo on a canvas, which strips EXIF, and `app/api/scan/route.ts` sends it to Claude (`claude-opus-5-5`) for structured detections. Without the key, the page says "Live mode is off in this demo." The scripted prototype never depends on it.

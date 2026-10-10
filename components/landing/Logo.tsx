@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { BRAND } from "@/lib/brand";
 
-// Shield + ink drop mark with a tiny brownie next to the wordmark.
+// Shield + ink drop mark (used in the footer).
 export function LogoMark({ className = "h-8 w-8" }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={className} aria-hidden>
@@ -22,16 +22,15 @@ export function LogoMark({ className = "h-8 w-8" }: { className?: string }) {
 export default function Logo() {
   return (
     <span className="flex items-center gap-2">
-      <LogoMark />
-      <span className="font-display text-xl font-semibold tracking-tight text-ink">{BRAND.name}</span>
       <Image
         src="/assets/brownie-wave.webp"
         alt=""
-        width={28}
-        height={32}
-        className="h-7 w-auto origin-bottom transition-transform hover:rotate-[-8deg] motion-reduce:transition-none"
+        width={32}
+        height={37}
+        className="h-8 w-auto origin-bottom transition-transform hover:rotate-[-8deg] motion-reduce:transition-none"
         priority
       />
+      <span className="font-display text-xl font-semibold tracking-tight text-ink">{BRAND.name}</span>
     </span>
   );
 }

@@ -92,11 +92,6 @@ export default function Hero() {
         <Layer depth={0.5} scroll={scroll} mx={mx} my={my} className="-left-24 top-24 w-[220px] opacity-70 sm:-left-16 sm:w-[340px] sm:opacity-90">
           <Image src="/assets/cloud-a.webp" alt="" width={800} height={516} className="h-auto w-full" />
         </Layer>
-        <Layer depth={0.9} scroll={scroll} mx={mx} my={my} className="left-[38%] top-16 hidden w-[120px] lg:block">
-          <div className="animate-bob">
-            <Image src="/assets/brownie-cloud.webp" alt="" width={640} height={724} className="h-auto w-full" />
-          </div>
-        </Layer>
         <Layer depth={1.2} scroll={scroll} mx={mx} my={my} className="right-[-60px] top-[46%] hidden w-[420px] opacity-95 lg:block">
           <Image src="/assets/cloud-b.webp" alt="" width={966} height={254} className="h-auto w-full" />
         </Layer>
@@ -115,10 +110,10 @@ export default function Hero() {
 
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="relative">
-          {/* Ink drop accent behind the headline */}
+          {/* Ink drop accent, kept clear of the headline */}
           <motion.div
             aria-hidden
-            className="absolute -top-12 right-2 -z-10 w-12 opacity-80 sm:-left-10 sm:right-auto sm:-top-10 sm:w-20"
+            className="mb-3 w-9 opacity-80 sm:w-11 xl:absolute xl:-left-24 xl:top-0 xl:mb-0 xl:w-16"
             initial={reduce ? false : { y: -40, opacity: 0, scale: 0.8 }}
             animate={{ y: 0, opacity: 0.8, scale: 1 }}
             transition={{ type: "spring", stiffness: 120, damping: 12, delay: 0.2 }}

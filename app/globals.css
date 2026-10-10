@@ -1,27 +1,139 @@
+/* created by kinjal */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Colors are stored as RGB channels so Tailwind can apply alpha. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: 251 246 238;
+  --paper-2: 245 237 225;
+  --card: 255 252 247;
+  --ink: 30 36 64;
+  --muted: 88 94 120;
+  --line: 230 220 205;
+  --respect: 43 58 103;
+  --compassion: 232 132 107;
+  --compassion-deep: 168 72 48;
+  --reflection: 143 128 194;
+  --reflection-deep: 92 76 156;
+  --integrity: 111 158 125;
+  --integrity-deep: 62 108 76;
+  --safe: 94 143 108;
+  --caution: 217 154 43;
+  --danger: 181 84 63;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --paper: 21 24 41;
+    --paper-2: 27 31 52;
+    --card: 33 38 62;
+    --ink: 243 238 230;
+    --muted: 178 180 200;
+    --line: 55 61 92;
+    --respect: 170 186 232;
+    --compassion: 240 150 126;
+    --compassion-deep: 244 170 150;
+    --reflection: 178 165 225;
+    --reflection-deep: 196 186 240;
+    --integrity: 135 184 150;
+    --integrity-deep: 160 206 175;
+    --safe: 125 180 142;
+    --caution: 232 180 90;
+    --danger: 226 128 106;
+    color-scheme: dark;
   }
 }
 
+:root[data-theme="dark"] {
+  --paper: 21 24 41;
+  --paper-2: 27 31 52;
+  --card: 33 38 62;
+  --ink: 243 238 230;
+  --muted: 178 180 200;
+  --line: 55 61 92;
+  --respect: 170 186 232;
+  --compassion: 240 150 126;
+  --compassion-deep: 244 170 150;
+  --reflection: 178 165 225;
+  --reflection-deep: 196 186 240;
+  --integrity: 135 184 150;
+  --integrity-deep: 160 206 175;
+  --safe: 125 180 142;
+  --caution: 232 180 90;
+  --danger: 226 128 106;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: rgb(var(--paper));
+  color: rgb(var(--ink));
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 3px solid rgb(var(--compassion));
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* Gentle idle bob for the mascot */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.animate-bob {
+  animation: bob 4s ease-in-out infinite;
+}
+
+/* Shimmer used inside the phone for "scanning" states */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 0.65) 50%, transparent 80%);
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* Pulsing ring that marks the next tap in free-explore mode */
+@keyframes tap-pulse {
+  0% { box-shadow: 0 0 0 0 rgb(232 132 107 / 0.55); }
+  70% { box-shadow: 0 0 0 12px rgb(232 132 107 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(232 132 107 / 0); }
+}
+.tap-hint {
+  animation: tap-pulse 1.8s ease-out infinite;
 }

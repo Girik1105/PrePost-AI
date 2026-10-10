@@ -1,0 +1,50 @@
+/* created by kinjal */
+/* Landing-only helpers that need to follow both the system theme and the manual toggle. */
+.hero-dim {
+  background: transparent;
+}
+:root[data-theme="dark"] .hero-dim {
+  background: rgb(21 24 41 / 0.6);
+}
+:root[data-theme="dark"] .hero-people {
+  filter: brightness(0.92) saturate(0.9);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero-dim {
+    background: rgb(21 24 41 / 0.6);
+  }
+  :root:not([data-theme="light"]) .hero-people {
+    filter: brightness(0.92) saturate(0.9);
+  }
+}
+
+/* Paper grain for warm sections */
+.paper-grain {
+  background-image: radial-gradient(rgb(var(--ink) / 0.035) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* Keep anchored sections clear of the fixed nav */
+section[id] {
+  scroll-margin-top: 72px;
+}
+
+/* Verdict text tuned for AA contrast on pale tints; lighter in dark mode */
+.ink-safe { color: #3E6C4C; }
+.ink-caution { color: #85570C; }
+.ink-danger { color: #9A4230; }
+:root[data-theme="dark"] .ink-safe { color: rgb(var(--safe)); }
+:root[data-theme="dark"] .ink-caution { color: rgb(var(--caution)); }
+:root[data-theme="dark"] .ink-danger { color: rgb(var(--danger)); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ink-safe { color: rgb(var(--safe)); }
+  :root:not([data-theme="light"]) .ink-caution { color: rgb(var(--caution)); }
+  :root:not([data-theme="light"]) .ink-danger { color: rgb(var(--danger)); }
+}
+
+/* Footer stays deep navy in both themes */
+.footer-bg { background: #2B3A67; }
+:root[data-theme="dark"] .footer-bg { background: #0F1226; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .footer-bg { background: #0F1226; }
+}

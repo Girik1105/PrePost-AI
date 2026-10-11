@@ -12,7 +12,8 @@ const VERDICTS = [
   { label: "Don't post as is", note: "Keep it in the family album.", dot: "bg-danger", ink: "ink-danger" },
 ];
 
-const SCHOOL_FIXED = { "school-sign": "blur", "school-crest": "blur", "school-tag": "blur" } as const;
+// The safe version removes the details outright, the same way /check erases them.
+const SCHOOL_FIXED = { "school-sign": "remove", "school-crest": "remove", "school-tag": "remove" } as const;
 
 export default function ChildAdvisor() {
   return (
@@ -60,7 +61,7 @@ export default function ChildAdvisor() {
               <h3 className="mt-4 font-display text-2xl font-medium text-ink">Why this matters</h3>
               <p className="mt-3 leading-relaxed text-ink/85">
                 This shows {BRAND.kid}&apos;s full first name, last initial, and school. Together, that&apos;s enough for a
-                stranger to find her at pickup time. Blurring these keeps the moment and loses the risk.
+                stranger to find her at pickup time. Removing these keeps the moment and loses the risk.
               </p>
               <div className="mt-6 flex items-center gap-4 border-t border-line pt-6">
                 <Image src="/assets/brownie-thinking.webp" alt="" width={80} height={92} className="h-16 w-auto shrink-0" />

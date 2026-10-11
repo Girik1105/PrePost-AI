@@ -5,7 +5,6 @@ import Problem from "@/components/landing/Problem";
 import HowItWorks from "@/components/landing/HowItWorks";
 import Detects from "@/components/landing/Detects";
 import ChildAdvisor from "@/components/landing/ChildAdvisor";
-import TalkToEdit from "@/components/landing/TalkToEdit";
 import Privacy from "@/components/landing/Privacy";
 import ForEveryone from "@/components/landing/ForEveryone";
 import Principles from "@/components/landing/Principles";
@@ -30,7 +29,6 @@ export default function Home() {
         <HowItWorks />
         <Detects />
         <ChildAdvisor />
-        <TalkToEdit />
         <Privacy />
         <ForEveryone />
         <Principles />

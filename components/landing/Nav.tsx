@@ -49,7 +49,7 @@ export default function Nav() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled || open ? "border-b border-line/70 bg-paper/85 backdrop-blur-md" : "bg-transparent"
+        scrolled || open ? "border-b border-line/70 bg-paper/[0.97] shadow-[0_1px_8px_rgb(30_36_64/0.06)]" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Main">

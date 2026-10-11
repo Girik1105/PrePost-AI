@@ -4,10 +4,13 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronsLeftRight, Download, ImagePlus, MapPinOff, RotateCcw, ScanSearch, SquareDashedMousePointer, Trash2, Upload } from "lucide-react";
+import { ChevronsLeftRight, Download, ImagePlus, LoaderCircle, MapPinOff, Redo2, RotateCcw, ScanSearch, SquareDashedMousePointer, Trash2, Undo2, Upload } from "lucide-react";
 import { CATEGORY_ICON } from "@/components/prototype/screens/Detail";
 import { VERDICT_LABEL, scoreWord, type Category, type Verdict } from "@/lib/scenes";
 import { redact, type Box, type RedactStyle } from "@/lib/redact";
+import HideMethodPicker from "./HideMethodPicker";
+import ShareBar from "./ShareBar";
+import { onEraserStatus, preloadEraser, eraserStatus, type EraserStatus } from "@/lib/lama";
 
 interface Item {
   id: string;
@@ -28,12 +31,6 @@ interface Summary {
 type Phase = "idle" | "scanning" | "ready" | "error";
 type Tool = "compare" | "draw";
 
-const STYLES: { id: RedactStyle; label: string }[] = [
-  { id: "blur", label: "Blur" },
-  { id: "pixelate", label: "Pixelate" },
-  { id: "erase", label: "Erase" },
-];
-
 const STATUS = ["Removing location data", "Looking for names, numbers and places", "Deciding what to hide"];
 
 const STEPS = [
@@ -45,13 +42,13 @@ const STEPS = [
 const VERDICT_INK: Record<Exclude<Verdict, null>, string> = { safe: "ink-safe", caution: "ink-caution", dont_post: "ink-danger" };
 
 /** Redraws the photo on a canvas, which drops EXIF (location, device, time). */
-function toJpeg(bitmap: ImageBitmap, maxSide: number, quality: number): string {
+function toJpeg(bitmap: ImageBitmap, maxSide: number, quality: number): { url: string; width: number; height: number } {
   const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement("canvas");
   canvas.width = Math.round(bitmap.width * scale);
   canvas.height = Math.round(bitmap.height * scale);
   canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  return canvas.toDataURL("image/jpeg", quality);
+  return { url: canvas.toDataURL("image/jpeg", quality), width: canvas.width, height: canvas.height };
 }
 
 function scoreInk(score: number) {
@@ -60,18 +57,12 @@ function scoreInk(score: number) {
   return "text-safe";
 }
 
-function Switch({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
+/** Visual on/off knob. The row around it is the actual button. */
+function Knob({ on }: { on: boolean }) {
   return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={on}
-      aria-label={label}
-      onClick={() => onChange(!on)}
-      className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${on ? "bg-integrity" : "bg-line"}`}
-    >
+    <span aria-hidden className={`relative mt-0.5 h-7 w-12 shrink-0 rounded-full transition-colors ${on ? "bg-integrity" : "bg-line"}`}>
       <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-[left] ${on ? "left-[22px]" : "left-0.5"}`} />
-    </button>
+    </span>
   );
 }
 
@@ -95,7 +86,7 @@ function Segmented<T extends string>({
           role="radio"
           aria-checked={value === o.id}
           onClick={() => onChange(o.id)}
-          className={`inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${
+          className={`inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${
             value === o.id ? "bg-card text-ink shadow-soft" : "text-muted hover:text-ink"
           }`}
         >
@@ -118,7 +109,14 @@ export default function PhotoChecker() {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [style, setStyle] = useState<RedactStyle>("blur");
+  const [style, setStyle] = useState<RedactStyle>("erase");
+  const [rendering, setRendering] = useState(false);
+  const [eraser, setEraser] = useState<EraserStatus>({ state: "idle" });
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+  const [active, setActive] = useState<string | null>(null);
+  // Undo history for every change to the list: toggles, new boxes, deletions.
+  const [past, setPast] = useState<Item[][]>([]);
+  const [future, setFuture] = useState<Item[][]>([]);
   const [tool, setTool] = useState<Tool>("compare");
   const [split, setSplit] = useState(50);
   const [dragging, setDragging] = useState(false);
@@ -126,6 +124,10 @@ export default function PhotoChecker() {
   const [draft, setDraft] = useState<Box | null>(null);
   const input = useRef<HTMLInputElement>(null);
   const stage = useRef<HTMLDivElement>(null);
+  const workspace = useRef<HTMLDivElement>(null);
+  const photoBox = useRef<HTMLDivElement>(null);
+  const [photoMaxH, setPhotoMaxH] = useState<number | null>(null);
+  const prevPhase = useRef<Phase>("idle");
   const drawStart = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
@@ -134,6 +136,40 @@ export default function PhotoChecker() {
       .then((d) => setEnabled(!!d.enabled))
       .catch(() => setEnabled(false));
   }, []);
+
+  useEffect(() => {
+    setEraser(eraserStatus());
+    return onEraserStatus(setEraser);
+  }, []);
+
+  // When a photo comes in, bring the whole workspace into view once, so photo and panel fit the window.
+  useEffect(() => {
+    const from = prevPhase.current;
+    prevPhase.current = phase;
+    if ((from === "idle" || from === "error" || from === "scanning") && (phase === "scanning" || phase === "ready") && from !== phase) {
+      requestAnimationFrame(() => {
+        const el = workspace.current;
+        if (!el) return;
+        // Just under the fixed nav, so the summary strip is never tucked behind it.
+        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: reduce ? "auto" : "smooth" });
+      });
+    }
+  }, [phase, reduce]);
+
+  // On wide screens the photo gets exactly the room its card has left, measured live.
+  useEffect(() => {
+    const box = photoBox.current;
+    if (!box || typeof ResizeObserver === "undefined") return;
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const measure = () => setPhotoMaxH(wide.matches ? Math.max(240, Math.floor(box.clientHeight) - 26) : null);
+    const ro = new ResizeObserver(measure);
+    ro.observe(box);
+    wide.addEventListener("change", measure);
+    return () => {
+      ro.disconnect();
+      wide.removeEventListener("change", measure);
+    };
+  }, [phase]);
 
   // Step through the status lines while the scan runs.
   useEffect(() => {
@@ -147,15 +183,68 @@ export default function PhotoChecker() {
   useEffect(() => {
     if (!original || phase !== "ready") return;
     let stale = false;
-    redact(original, items.filter((i) => i.hidden).map((i) => i.box), style)
+    setRendering(true);
+    redact(
+      original,
+      items.filter((i) => i.hidden).map((i) => i.box),
+      style,
+      items.map((i) => i.box),
+      (done, total) => !stale && setProgress({ done, total }),
+    )
       .then((url) => !stale && setSafe(url))
-      .catch(() => !stale && setSafe(null));
+      .catch(() => !stale && setSafe(null))
+      .finally(() => {
+        if (stale) return;
+        setRendering(false);
+        setProgress(null);
+      });
     return () => {
       stale = true;
     };
   }, [original, items, style, phase]);
 
+  const commit = (next: Item[]) => {
+    setPast((p) => [...p, items]);
+    setFuture([]);
+    setItems(next);
+  };
+  const undo = () => {
+    if (!past.length) return;
+    setFuture((f) => [items, ...f]);
+    setItems(past[past.length - 1]);
+    setPast((p) => p.slice(0, -1));
+  };
+  const redo = () => {
+    if (!future.length) return;
+    setPast((p) => [...p, items]);
+    setItems(future[0]);
+    setFuture((f) => f.slice(1));
+  };
+  const toggle = (id: string) => commit(items.map((x) => (x.id === id ? { ...x, hidden: !x.hidden } : x)));
+
+  // Cmd/Ctrl+Z to undo, Shift+Cmd/Ctrl+Z or Ctrl+Y to redo.
+  useEffect(() => {
+    if (phase !== "ready") return;
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey)) return;
+      if (e.target instanceof Element && e.target.closest("input:not([type=range]), textarea")) return;
+      const k = e.key.toLowerCase();
+      if (k === "z" && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+      } else if ((k === "z" && e.shiftKey) || k === "y") {
+        e.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
   const reset = () => {
+    setPast([]);
+    setFuture([]);
+    setActive(null);
     setPhase("idle");
     setOriginal(null);
     setSafe(null);
@@ -183,9 +272,11 @@ export default function PhotoChecker() {
         setPhase("error");
         return;
       }
-      const full = toJpeg(bitmap, 2400, 0.92);
+      const full = toJpeg(bitmap, 2400, 0.92).url;
       const forScan = toJpeg(bitmap, 1400, 0.85);
       setFileName(file.name.replace(/\.[^.]+$/, "") || "photo");
+      // Fetch the on-device eraser while the scan runs, so it is ready when the results land.
+      preloadEraser();
       setOriginal(full);
 
       if (!enabled) {
@@ -200,7 +291,7 @@ export default function PhotoChecker() {
         const res = await fetch("/api/scan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: forScan }),
+          body: JSON.stringify({ image: forScan.url, width: forScan.width, height: forScan.height }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error ?? "The scan didn't finish.");
@@ -251,9 +342,9 @@ export default function PhotoChecker() {
     drawStart.current = null;
     setDraft(null);
     if (box.w < 0.015 || box.h < 0.015) return;
-    setItems((list) => [
-      ...list,
-      { id: `you-${Date.now()}`, label: `Your box ${list.filter((i) => i.manual).length + 1}`, category: "Identity", box, hidden: true, manual: true },
+    commit([
+      ...items,
+      { id: `you-${Date.now()}`, label: `Your box ${items.filter((i) => i.manual).length + 1}`, category: "Identity", box, hidden: true, manual: true },
     ]);
   };
 
@@ -277,7 +368,7 @@ export default function PhotoChecker() {
         : "Drop in a photo. SafePost finds what it gives away, hides it, and hands you a clean copy to post.";
 
   return (
-    <div className="relative isolate overflow-hidden">
+    <div className="relative isolate overflow-clip">
       {/* Sky that fades into paper, echoing the landing hero */}
       <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[640px]">
         <Image src="/assets/hero-sky.webp" alt="" fill priority sizes="100vw" className="object-cover object-[50%_30%]" />
@@ -394,11 +485,47 @@ export default function PhotoChecker() {
         )}
 
         {(phase === "scanning" || phase === "ready") && original && (
-          <div className="mt-14 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-            {/* Photo stage */}
-            <div className="rounded-[2rem] border border-line bg-paper2 p-3 shadow-soft sm:p-5">
+          <div
+            ref={workspace}
+            className={`mt-14 grid scroll-mt-20 gap-4 [overflow-anchor:none] lg:h-[calc(100svh-6.5rem)] lg:min-h-[600px] lg:grid-cols-[minmax(0,1fr)_380px] ${
+              summary && phase === "ready" ? "lg:grid-rows-[auto_minmax(0,1fr)]" : "lg:grid-rows-[minmax(0,1fr)]"
+            }`}
+          >
+            {/* Summary strip: the score and the plain-language why, always in view */}
+            {summary && after !== null && phase === "ready" && (
+              <section
+                aria-label="Summary"
+                className="flex flex-col gap-3 rounded-[1.5rem] border border-line bg-card px-5 py-4 shadow-soft sm:flex-row sm:items-center sm:gap-6 lg:col-span-2"
+              >
+                <div className="shrink-0">
+                  <p className="text-sm font-medium text-muted">Exposure score</p>
+                  <p className="mt-0.5 flex items-baseline gap-2.5 font-display">
+                    <span className={`text-2xl text-muted line-through decoration-2 ${after === summary.exposureScore ? "hidden" : ""}`}>
+                      {summary.exposureScore}
+                    </span>
+                    <span className={`text-5xl font-medium leading-none ${scoreInk(after)}`}>{after}</span>
+                    <span className="text-base text-muted">of 100</span>
+                  </p>
+                  <p className="mt-1 text-sm text-muted">
+                    {after === summary.exposureScore ? scoreWord(after) : `${scoreWord(after)} after your changes`}
+                    {summary.verdict && <span className={`ml-2 font-semibold ${VERDICT_INK[summary.verdict]}`}>{VERDICT_LABEL[summary.verdict]}</span>}
+                  </p>
+                </div>
+                {summary.whyItMatters && (
+                  <p className="text-pretty border-line text-[15px] leading-relaxed text-ink/85 sm:border-l sm:pl-6">{summary.whyItMatters}</p>
+                )}
+              </section>
+            )}
+
+            {/* Photo stage: on wide screens the workspace fills the window, so the photo never scrolls away */}
+            <div className="flex min-h-0 flex-col rounded-[2rem] border border-line bg-paper2 p-3 shadow-soft sm:p-4">
               {phase === "ready" && (
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div className="mb-2.5">
+                  <HideMethodPicker value={style} onChange={setStyle} />
+                </div>
+              )}
+              {phase === "ready" && (
+                <div className="flex flex-wrap items-center gap-3">
                   <Segmented<Tool>
                     label="What the photo does when you drag"
                     value={tool}
@@ -408,14 +535,32 @@ export default function PhotoChecker() {
                       { id: "draw", label: "Add a box", icon: <SquareDashedMousePointer size={16} aria-hidden /> },
                     ]}
                   />
-                  <p className="text-sm text-muted">
-                    {tool === "compare" ? "Drag to compare the original and the safe version." : "Drag over anything you want hidden."}
+                  <p className="min-w-0 flex-1 truncate text-sm text-muted sm:text-center">
+                    {tool === "compare" ? "Drag the slider to compare" : "Drag over anything to hide it"}
                   </p>
+                  <div className="flex gap-1.5">
+                    {[
+                      { label: "Undo", Icon: Undo2, on: undo, can: past.length > 0, keys: "\u2318Z" },
+                      { label: "Redo", Icon: Redo2, on: redo, can: future.length > 0, keys: "\u21e7\u2318Z" },
+                    ].map((b) => (
+                      <button
+                        key={b.label}
+                        type="button"
+                        onClick={b.on}
+                        disabled={!b.can}
+                        title={`${b.label} (${b.keys})`}
+                        aria-label={b.label}
+                        className="grid h-9 w-9 place-items-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-paper disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        <b.Icon size={17} aria-hidden />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              <div className="flex justify-center py-2 sm:py-4">
-                <div className="rounded-[6px] bg-white p-2 shadow-lift ring-1 ring-black/5 sm:p-3">
+              <div ref={photoBox} className="flex min-h-0 flex-1 items-center justify-center pt-2.5">
+                <div className="rounded-[6px] bg-white p-1.5 shadow-lift ring-1 ring-black/5 sm:p-2">
                 <div
                   ref={stage}
                   className={`relative w-fit select-none ${tool === "draw" && phase === "ready" ? "cursor-crosshair touch-none" : ""}`}
@@ -433,6 +578,7 @@ export default function PhotoChecker() {
                     alt={phase === "ready" ? "Safe version of your photo" : "Your photo, being checked"}
                     draggable={false}
                     className="block max-h-[64vh] w-auto max-w-full"
+                    style={photoMaxH ? { maxHeight: photoMaxH } : undefined}
                   />
 
                   {phase === "scanning" && (
@@ -472,15 +618,42 @@ export default function PhotoChecker() {
                   )}
 
                   {phase === "ready" &&
-                    items.map((it) =>
-                      tool === "draw" || !it.hidden ? (
-                        <div
-                          key={it.id}
-                          className={`pointer-events-none absolute rounded-md border-2 ${it.hidden ? "border-white/80" : "border-dashed border-compassion"}`}
-                          style={{ left: pct(it.box.x), top: pct(it.box.y), width: pct(it.box.w), height: pct(it.box.h) }}
-                        />
-                      ) : null,
-                    )}
+                    items.map((it) => (
+                      <div
+                        key={it.id}
+                        className={`pointer-events-none absolute rounded-md transition-[border-color,box-shadow] ${
+                          active === it.id
+                            ? "z-10 border-[3px] border-compassion shadow-[0_0_0_4px_rgb(var(--compassion)/0.3)]"
+                            : it.hidden
+                              ? "border-2 border-white/85 shadow-[0_0_0_1px_rgb(30_36_64/0.25)]"
+                              : "border-2 border-dashed border-compassion"
+                        }`}
+                        style={{ left: pct(it.box.x), top: pct(it.box.y), width: pct(it.box.w), height: pct(it.box.h) }}
+                      >
+                        {active === it.id && (
+                          <span className="absolute -top-8 left-0 whitespace-nowrap rounded-full bg-[#1E2440] px-2.5 py-1 text-xs font-semibold text-white">
+                            {it.hidden ? "Hidden" : "Showing"} · {it.label}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+
+                  {phase === "ready" && rendering && (
+                    <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#1E2440]/80 px-3 py-1.5 text-xs font-semibold text-white">
+                      <LoaderCircle size={14} className="animate-spin motion-reduce:animate-none" aria-hidden />
+                      {style !== "erase"
+                        ? "Updating"
+                        : eraser.state === "downloading"
+                          ? eraser.progress > 0
+                            ? `Downloading the AI eraser · ${Math.round(eraser.progress * 100)}% (first time only)`
+                            : "Getting the AI eraser ready"
+                          : eraser.state === "failed"
+                            ? "Rebuilding the background"
+                            : progress && progress.total > 1
+                            ? `Erasing with AI \u00b7 ${Math.min(progress.done + 1, progress.total)} of ${progress.total}`
+                            : "Erasing with AI"}
+                    </span>
+                  )}
 
                   {draft && (
                     <div
@@ -494,9 +667,9 @@ export default function PhotoChecker() {
             </div>
 
             {/* Side panel */}
-            <aside className="rounded-[2rem] border border-line bg-card p-5 shadow-soft sm:p-6" aria-live="polite">
+            <aside className="flex min-h-0 flex-col overflow-hidden rounded-[2rem] border border-line bg-card shadow-soft" aria-live="polite">
               {phase === "scanning" ? (
-                <div className="py-6">
+                <div className="p-6 sm:p-7">
                   <p className="font-display text-2xl font-medium text-ink">Checking your photo</p>
                   <ol className="mt-5 space-y-3">
                     {STATUS.map((s, i) => (
@@ -509,96 +682,98 @@ export default function PhotoChecker() {
                 </div>
               ) : (
                 <>
-                  {summary && after !== null && (
-                    <div className="border-b border-line pb-5">
-                      <p className="text-sm font-medium text-muted">Exposure score</p>
-                      <p className="mt-1 flex items-baseline gap-3 font-display">
-                        <span className={`text-3xl text-muted line-through decoration-2 ${after === summary.exposureScore ? "hidden" : ""}`}>
-                          {summary.exposureScore}
-                        </span>
-                        <span className={`text-6xl font-medium leading-none ${scoreInk(after)}`}>{after}</span>
-                        <span className="text-base text-muted">of 100</span>
-                      </p>
-                      <p className="mt-2 text-sm text-muted">
-                        {after === summary.exposureScore ? scoreWord(after) : `${scoreWord(after)} after your changes`}
-                      </p>
-                      {summary.verdict && (
-                        <p className={`mt-3 font-semibold ${VERDICT_INK[summary.verdict]}`}>{VERDICT_LABEL[summary.verdict]}</p>
-                      )}
-                    </div>
-                  )}
-
-                  {notice && <p className="mb-4 mt-1 rounded-2xl bg-paper2 p-4 text-sm leading-relaxed text-ink/80">{notice}</p>}
+                  {/* Only this middle part scrolls; the actions below stay put. */}
+                  <div className="min-h-0 flex-1 overscroll-contain px-5 py-4 sm:px-6 lg:overflow-y-auto">
+                  {notice && <p className="mb-4 rounded-2xl bg-paper2 p-4 text-sm leading-relaxed text-ink/80">{notice}</p>}
 
                   {items.length > 0 && (
                     <>
-                      <h3 className="mt-5 font-semibold text-ink">What it gives away</h3>
-                      <ul className="mt-3 divide-y divide-line">
+                      <h3 className="font-semibold text-ink">What it gives away</h3>
+                      <p className="mt-1 text-sm text-muted">Click one to show or hide it.</p>
+                      <ul className="-mx-2 mt-2">
                         {items.map((it) => {
                           const { Icon, bg } = CATEGORY_ICON[it.category] ?? CATEGORY_ICON.Identity;
                           return (
-                            <li key={it.id} className="flex items-start gap-3 py-3">
-                              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl text-white" style={{ background: it.manual ? "#7A7781" : bg }}>
-                                {it.manual ? <SquareDashedMousePointer size={16} aria-hidden /> : <Icon size={16} aria-hidden />}
-                              </span>
-                              <div className="min-w-0 flex-1">
-                                <p className="font-medium leading-snug text-ink">{it.label}</p>
-                                {it.reason && <p className="mt-0.5 text-sm leading-snug text-muted">{it.reason}</p>}
-                              </div>
+                            <li key={it.id} className="flex items-start gap-1 py-1.5">
+                              <button
+                                type="button"
+                                aria-pressed={it.hidden}
+                                aria-label={`Hide ${it.label}`}
+                                onClick={() => toggle(it.id)}
+                                onMouseEnter={() => setActive(it.id)}
+                                onMouseLeave={() => setActive(null)}
+                                onFocus={() => setActive(it.id)}
+                                onBlur={() => setActive(null)}
+                                className={`flex min-w-0 flex-1 items-start gap-3 rounded-2xl px-2 py-2 text-left transition-colors hover:bg-paper2 ${active === it.id ? "bg-paper2" : ""}`}
+                              >
+                                <span
+                                  className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl text-white transition-opacity ${it.hidden ? "" : "opacity-50"}`}
+                                  style={{ background: it.manual ? "#7A7781" : bg }}
+                                >
+                                  {it.manual ? <SquareDashedMousePointer size={16} aria-hidden /> : <Icon size={16} aria-hidden />}
+                                </span>
+                                <span className="min-w-0 flex-1">
+                                  <span className={`block font-medium leading-snug ${it.hidden ? "text-ink" : "text-muted line-through decoration-1"}`}>{it.label}</span>
+                                  {it.reason && (
+                                    <span className={`mt-0.5 text-sm leading-snug text-muted ${active === it.id ? "block" : "line-clamp-2"}`}>{it.reason}</span>
+                                  )}
+                                </span>
+                                <Knob on={it.hidden} />
+                              </button>
                               {it.manual && (
                                 <button
                                   type="button"
-                                  onClick={() => setItems((l) => l.filter((x) => x.id !== it.id))}
+                                  onClick={() => commit(items.filter((x) => x.id !== it.id))}
                                   aria-label={`Delete ${it.label}`}
-                                  className="grid h-7 w-7 place-items-center rounded-full text-muted hover:bg-ink/5 hover:text-ink"
+                                  className="mt-2.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted hover:bg-ink/5 hover:text-ink"
                                 >
                                   <Trash2 size={15} aria-hidden />
                                 </button>
                               )}
-                              <Switch
-                                on={it.hidden}
-                                label={`Hide ${it.label}`}
-                                onChange={(v) => setItems((l) => l.map((x) => (x.id === it.id ? { ...x, hidden: v } : x)))}
-                              />
                             </li>
                           );
                         })}
                       </ul>
-                      <h3 className="mt-5 font-semibold text-ink">How to hide it</h3>
-                      <div className="mt-3">
-                        <Segmented<RedactStyle> label="How to hide it" value={style} onChange={setStyle} options={STYLES} />
-                      </div>
                     </>
                   )}
 
-                  {summary?.whyItMatters && <p className="mt-5 text-pretty leading-relaxed text-ink/80">{summary.whyItMatters}</p>}
+                  </div>
 
-                  <div className="mt-6 flex flex-col gap-3">
+                  <div className="shrink-0 border-t border-line bg-card px-5 pb-4 pt-4 sm:px-6">
+                  <div className="flex flex-col gap-2.5">
                     <a
                       href={safe ?? undefined}
                       download={`${fileName}-safe.jpg`}
-                      aria-disabled={!safe}
+                      aria-disabled={!safe || rendering}
                       className={`inline-flex items-center justify-center gap-2 rounded-full bg-compassion px-6 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5 ${
-                        safe ? "" : "pointer-events-none opacity-60"
+                        safe && !rendering ? "" : "pointer-events-none opacity-60"
                       }`}
                     >
                       <Download size={18} aria-hidden />
                       Save safe version
                     </a>
-                    <button
-                      type="button"
-                      onClick={() => input.current?.click()}
-                      className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-card px-6 py-3 text-base font-semibold text-ink transition-colors hover:bg-paper2"
-                    >
-                      <ImagePlus size={18} aria-hidden />
-                      Check another photo
-                    </button>
-                    <button type="button" onClick={reset} className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-muted hover:text-ink">
-                      <RotateCcw size={14} aria-hidden />
-                      Start over
-                    </button>
+                    <ShareBar safe={safe} fileName={fileName} disabled={!safe || rendering} />
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => input.current?.click()}
+                        className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-card px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-paper2"
+                      >
+                        <ImagePlus size={16} aria-hidden />
+                        Check another
+                      </button>
+                      <button
+                        type="button"
+                        onClick={reset}
+                        className="inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-paper2 hover:text-ink"
+                      >
+                        <RotateCcw size={14} aria-hidden />
+                        Start over
+                      </button>
+                    </div>
                   </div>
-                  <p className="mt-4 text-center text-xs leading-relaxed text-muted">The saved copy has no location, device or time data.</p>
+                  <p className="mt-3 text-center text-xs leading-relaxed text-muted">The saved copy has no location, device or time data.</p>
+                  </div>
                 </>
               )}
             </aside>

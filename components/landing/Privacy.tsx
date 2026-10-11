@@ -1,6 +1,6 @@
 //created by kinjal
 import Image from "next/image";
-import { Smartphone, Lock, UserX, HandCoins, Wand2 } from "lucide-react";
+import { DeviceMobile as Smartphone, Lock, UserMinus as UserX, HandCoins, MagicWand as Wand2 } from "@phosphor-icons/react/dist/ssr";
 import Reveal from "./Reveal";
 
 const POINTS = [

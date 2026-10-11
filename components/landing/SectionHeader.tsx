@@ -1,6 +1,7 @@
 //created by kinjal
 import Image from "next/image";
 import Reveal from "./Reveal";
+import WordReveal from "./WordReveal";
 
 // Shared section heading: small eyebrow, editorial title, a brownie pose that fits the section.
 export default function SectionHeader({
@@ -33,9 +34,9 @@ export default function SectionHeader({
         />
       )}
       <p className={`text-sm font-semibold uppercase tracking-[0.16em] ${eyebrowClass}`}>{eyebrow}</p>
-      <h2 className="mt-3 text-balance font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink sm:text-5xl">
+      <WordReveal className="mt-3 text-balance font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink sm:text-5xl">
         {title}
-      </h2>
+      </WordReveal>
       {intro && <p className="mt-5 text-pretty text-lg leading-relaxed text-muted">{intro}</p>}
     </Reveal>
   );

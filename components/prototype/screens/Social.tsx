@@ -2,7 +2,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Bookmark, Heart, MessageCircle, Plus, Send, ShieldCheck, X } from "lucide-react";
+import { BookmarkSimple as Bookmark, Heart, ChatCircle as MessageCircle, Plus, PaperPlaneTilt as Send, ShieldCheck, X } from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useState } from "react";
 import { BRAND } from "@/lib/brand";
 import { SCENES, type SceneId } from "@/lib/scenes";

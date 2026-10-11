@@ -2,7 +2,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Baby, CreditCard, Fingerprint, Heart, MapPin, MessageSquareText, Share, ShieldCheck, Sparkles, Users, Wand2 } from "lucide-react";
+import { Baby, CreditCard, Fingerprint, Heart, MapPin, ChatText as MessageSquareText, Export as Share, ShieldCheck, Sparkle as Sparkles, Users, MagicWand as Wand2 } from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useRef, useState } from "react";
 import { SCENES, liveScore, scoreWord, type Category } from "@/lib/scenes";
 import { useProto } from "../PrototypeController";

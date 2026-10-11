@@ -1,5 +1,5 @@
 //created by kinjal
-import { Mic, MessageSquareText } from "lucide-react";
+import { Microphone as Mic, ChatText as MessageSquareText } from "@phosphor-icons/react/dist/ssr";
 import MiniTalkToEdit from "@/components/prototype/MiniTalkToEdit";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";

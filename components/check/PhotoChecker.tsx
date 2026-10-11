@@ -4,7 +4,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronsLeftRight, Download, ImagePlus, LoaderCircle, MapPinOff, Redo2, RotateCcw, ScanSearch, SquareDashedMousePointer, Trash2, Undo2, Upload } from "lucide-react";
+import { ArrowsHorizontal as ChevronsLeftRight, DownloadSimple as Download, ImageSquare as ImagePlus, CircleNotch as LoaderCircle, GpsSlash as MapPinOff, ArrowUUpRight as Redo2, ArrowCounterClockwise as RotateCcw, MagnifyingGlass as ScanSearch, Selection as SquareDashedMousePointer, Trash as Trash2, ArrowUUpLeft as Undo2, UploadSimple as Upload } from "@phosphor-icons/react/dist/ssr";
 import { CATEGORY_ICON } from "@/components/prototype/screens/Detail";
 import { VERDICT_LABEL, scoreWord, type Category, type Verdict } from "@/lib/scenes";
 import { redact, type Box, type RedactStyle } from "@/lib/redact";

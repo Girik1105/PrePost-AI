@@ -2,7 +2,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUp, Mic } from "lucide-react";
+import { ArrowUp, Microphone as Mic } from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useState } from "react";
 import type { ObjMode } from "@/lib/scenes";
 import PhoneFrame from "./PhoneFrame";
@@ -96,7 +96,7 @@ export default function MiniTalkToEdit({ className = "" }: { className?: string 
             </span>
             <Mic className="h-5 w-5 text-white/80" aria-hidden />
             <span className="flex h-[36px] w-[36px] items-center justify-center rounded-full text-[#1E2440]" style={{ background: typed && !sent ? "#E8846B" : "rgba(255,255,255,0.25)" }}>
-              <ArrowUp className="h-5 w-5" strokeWidth={2.6} aria-hidden />
+              <ArrowUp className="h-5 w-5" weight="bold" aria-hidden />
             </span>
           </div>
         </div>

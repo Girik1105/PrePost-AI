@@ -2,7 +2,7 @@
 "use client";
 
 import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
-import { Check, CircleAlert, OctagonAlert } from "lucide-react";
+import { Check, WarningCircle as CircleAlert, WarningOctagon as OctagonAlert } from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useState } from "react";
 import { VERDICT_LABEL, VIEWBOX, type Detection, type Risk, type Verdict } from "@/lib/scenes";
 import { APP } from "./kit";
@@ -73,7 +73,7 @@ export function VerdictPill({ verdict, small = false }: { verdict: Exclude<Verdi
       className={`inline-flex items-center gap-[6px] rounded-full font-semibold ${small ? "px-[10px] py-[4px] text-[12px]" : "px-[12px] py-[6px] text-[14px]"}`}
       style={{ background: s.bg, color: s.fg }}
     >
-      <s.Icon className={small ? "h-[14px] w-[14px]" : "h-4 w-4"} strokeWidth={2.4} aria-hidden />
+      <s.Icon className={small ? "h-[14px] w-[14px]" : "h-4 w-4"} weight="bold" aria-hidden />
       {VERDICT_LABEL[verdict]}
     </span>
   );
@@ -92,7 +92,7 @@ export function RiskBadge({ risk }: { risk: Risk }) {
       role="img"
       aria-label={map.label}
     >
-      {risk === "safe" && <Check className="h-[11px] w-[11px] text-white" strokeWidth={3.5} aria-hidden />}
+      {risk === "safe" && <Check className="h-[11px] w-[11px] text-white" weight="bold" aria-hidden />}
     </span>
   );
 }

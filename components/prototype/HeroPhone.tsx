@@ -36,7 +36,7 @@ export default function HeroPhone({ className = "" }: { className?: string }) {
   const toDemo = (e: React.SyntheticEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    document.getElementById("demo")?.scrollIntoView({ behavior: "smooth" });
+    window.location.href = "/share";
   };
   return (
     <div className={`relative ${className}`}>
@@ -51,7 +51,7 @@ export default function HeroPhone({ className = "" }: { className?: string }) {
       <ProtoProvider initial={{ screen: "lock", notif: false }}>
         <Loop />
         <div onClickCapture={toDemo}>
-          <PhoneFrame statusTone="light" label="SafePost notification on a lock screen. Click to jump to the demo.">
+          <PhoneFrame statusTone="light" label="SafePost notification on a lock screen. Click to see the share flow.">
             <LockScreen />
           </PhoneFrame>
         </div>

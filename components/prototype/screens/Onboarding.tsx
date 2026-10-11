@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Images, Lock, Plus, X } from "lucide-react";
+import { Check, Images, Lock, Plus, X } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 import { BRAND } from "@/lib/brand";
 import { useProto } from "../PrototypeController";
@@ -81,7 +81,7 @@ export function Access() {
               className="flex h-[24px] w-[24px] items-center justify-center rounded-full border-2"
               style={{ borderColor: choice === o.id ? APP.coral : "#D6D1C9", background: choice === o.id ? APP.coral : "transparent" }}
             >
-              {choice === o.id && <Check className="h-[14px] w-[14px] text-white" strokeWidth={3.5} aria-hidden />}
+              {choice === o.id && <Check className="h-[14px] w-[14px] text-white" weight="bold" aria-hidden />}
             </span>
           </button>
         ))}

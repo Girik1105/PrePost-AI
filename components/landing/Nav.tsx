@@ -2,12 +2,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { List as Menu, Moon, Sun, X } from "@phosphor-icons/react/dist/ssr";
 import Logo from "./Logo";
 
 const LINKS = [
   { href: "/#how", label: "How it works" },
-  { href: "/#demo", label: "Demo" },
+  { href: "/share", label: "Share flow" },
   { href: "/#privacy", label: "Privacy" },
   { href: "/#team", label: "Team" },
 ];

@@ -7,7 +7,6 @@ import "./globals.css";
 const display = Fraunces({
   subsets: ["latin"],
   variable: "--font-display",
-  axes: ["SOFT", "opsz"],
   display: "swap",
 });
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });

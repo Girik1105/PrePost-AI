@@ -17,7 +17,7 @@ export default function Privacy() {
       <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[40px] bg-integrity/15 px-6 py-16 ring-1 ring-integrity/30 sm:px-12 sm:py-20">
         <div className="grid items-center gap-12 lg:grid-cols-[auto_1fr]">
           <Reveal className="mx-auto">
-            <Image
+            <Image sizes="(min-width: 640px) 200px, 170px"
               src="/assets/brownie-shield.webp"
               alt="Brownie mascot holding a green shield"
               width={220}
@@ -34,13 +34,12 @@ export default function Privacy() {
             </Reveal>
             <ul className="mt-10 grid gap-4 sm:grid-cols-2">
               {POINTS.map((p, i) => (
-                <Reveal key={p.text} delay={i * 0.06}>
-                  <li className="flex h-full items-start gap-3 rounded-2xl bg-card/80 p-4 shadow-soft lift">
+                <Reveal key={p.text} delay={i * 0.06} as="li" className="flex h-full items-start gap-3 rounded-2xl bg-card/80 p-4 shadow-soft lift">
                     <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-integrity text-paper">
                       <p.icon size={19} aria-hidden />
                     </span>
                     <span className="pt-1.5 font-medium leading-snug text-ink">{p.text}</span>
-                  </li>
+
                 </Reveal>
               ))}
             </ul>

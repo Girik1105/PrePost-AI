@@ -14,7 +14,6 @@ import {
 } from "framer-motion";
 import { Play, UploadSimple as Upload } from "@phosphor-icons/react/dist/ssr";
 import HeroPhone from "@/components/prototype/HeroPhone";
-import InkUnderline from "./InkUnderline";
 
 // One drifting layer. depth scales both the scroll and the mouse movement.
 function Layer({
@@ -43,15 +42,11 @@ function Layer({
   );
 }
 
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 /** First-load entrance: each hero piece rises out of a soft blur, one after another. */
-function enter(reduce: boolean | null, step: number, from: { y?: number; scale?: number } = { y: 18 }) {
-  return {
-    initial: reduce ? false : ({ opacity: 0, filter: "blur(8px)", ...from } as const),
-    animate: { opacity: 1, filter: "blur(0px)", y: 0, scale: 1 },
-    transition: { duration: 0.8, ease: EASE, delay: 0.15 + step * 0.12 },
-  };
+/** Entrance done in CSS (see .hero-in in landing.css) so the headline paints before any JS loads. */
+function enter(step: number, kind: "rise" | "fade" = "rise") {
+  return { className: kind === "fade" ? "hero-fade" : "hero-in", style: { animationDelay: `${0.08 + step * 0.1}s` } };
 }
 
 export default function Hero() {
@@ -101,21 +96,21 @@ export default function Hero() {
       {/* Drifting clouds and brownies */}
       <div className="absolute inset-0 -z-10">
         <Layer depth={0.5} scroll={scroll} mx={mx} my={my} className="-left-24 top-24 w-[220px] opacity-70 sm:-left-16 sm:w-[340px] sm:opacity-90">
-          <Image src="/assets/cloud-a.webp" alt="" width={800} height={516} className="h-auto w-full" />
+          <Image sizes="(min-width: 640px) 340px, 220px" src="/assets/cloud-a.webp" alt="" width={800} height={516} className="h-auto w-full" />
         </Layer>
         <Layer depth={1.2} scroll={scroll} mx={mx} my={my} className="right-[-60px] top-[46%] hidden w-[420px] opacity-95 lg:block">
-          <Image src="/assets/cloud-b.webp" alt="" width={966} height={254} className="h-auto w-full" />
+          <Image sizes="420px" src="/assets/cloud-b.webp" alt="" width={966} height={254} className="h-auto w-full" />
         </Layer>
         <Layer depth={0.7} scroll={scroll} mx={mx} my={my} className="bottom-[70px] right-[1%] hidden w-[190px] xl:block">
           <div className="relative">
-            <Image src="/assets/cloud-a.webp" alt="" width={800} height={516} className="h-auto w-full" />
+            <Image sizes="190px" src="/assets/cloud-a.webp" alt="" width={800} height={516} className="h-auto w-full" />
             <div className="absolute -top-[52%] left-[30%] w-[38%] animate-bob [animation-delay:-1.5s]">
-              <Image src="/assets/brownie-camera.webp" alt="" width={640} height={865} className="h-auto w-full" />
+              <Image sizes="110px" src="/assets/brownie-camera.webp" alt="" width={640} height={865} className="h-auto w-full" />
             </div>
           </div>
         </Layer>
         <Layer depth={1.5} scroll={scroll} mx={mx} my={my} className="right-[8%] top-24 hidden w-[90px] xl:block">
-          <Image src="/assets/sparkles.webp" alt="" width={481} height={546} className="h-auto w-full opacity-80" />
+          <Image sizes="90px" src="/assets/sparkles.webp" alt="" width={481} height={546} className="h-auto w-full opacity-80" />
         </Layer>
       </div>
 
@@ -129,20 +124,20 @@ export default function Hero() {
             animate={{ y: 0, opacity: 0.8, scale: 1 }}
             transition={{ type: "spring", stiffness: 120, damping: 12, delay: 0.2 }}
           >
-            <Image src="/assets/ink-drop.webp" alt="" width={374} height={624} className="h-auto w-full" />
+            <Image sizes="(min-width: 1280px) 64px, 44px" src="/assets/ink-drop.webp" alt="" width={374} height={624} className="h-auto w-full" />
           </motion.div>
-          <motion.h1
-            {...enter(reduce, 0)}
+          <h1
             id="hero-title"
-            className="text-balance font-display text-[2.55rem] font-medium leading-[1.02] tracking-tight text-ink [text-shadow:0_1px_18px_rgb(var(--paper)/0.9)] sm:text-6xl lg:text-7xl"
+            style={enter(0).style}
+            className="hero-title-in text-balance font-display text-[2.55rem] font-medium leading-[1.02] tracking-tight text-ink [text-shadow:0_1px_18px_rgb(var(--paper)/0.9)] sm:text-6xl lg:text-7xl"
           >
-            Everything posted online is <InkUnderline>ink.</InkUnderline>
-          </motion.h1>
-          <motion.p {...enter(reduce, 1)} className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink/80 sm:text-xl">
+            Everything posted online is ink.
+          </h1>
+          <p style={enter(1).style} className="hero-in mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink/80 sm:text-xl">
             PrePost checks your photos before you share them. It finds what they give away, blurs it, and tells you
             why.
-          </motion.p>
-          <motion.div {...enter(reduce, 2)} className="mt-9 flex flex-wrap gap-3">
+          </p>
+          <div style={enter(2).style} className="hero-in mt-9 flex flex-wrap gap-3">
             <a
               href="/check"
               className="inline-flex items-center gap-2 rounded-full bg-compassion px-6 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift press"
@@ -157,26 +152,27 @@ export default function Hero() {
               <Play size={18} weight="fill" aria-hidden />
               See it in action
             </a>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div {...enter(reduce, 2, { y: 28, scale: 0.97 })} className="relative mx-auto pt-10">
+        <div style={enter(2).style} className="hero-in relative mx-auto pt-10">
           <HeroPhone className="w-[250px] sm:w-[290px]" />
-        </motion.div>
+        </div>
       </div>
 
       {/* Pencil sketches of everyday people taking photos */}
-      <motion.div
-        {...enter(reduce, 4, { y: 12 })}
-        className="pointer-events-none relative -z-10 mt-10 flex justify-center px-4 lg:absolute lg:inset-x-0 lg:bottom-0 lg:mt-0 lg:justify-start lg:px-0 lg:pl-[max(2rem,calc((100vw-72rem)/2))]">
+      <div
+        style={enter(4).style}
+        className="hero-fade pointer-events-none relative -z-10 mt-10 flex justify-center px-4 lg:absolute lg:inset-x-0 lg:bottom-0 lg:mt-0 lg:justify-start lg:px-0 lg:pl-[max(2rem,calc((100vw-72rem)/2))]">
         <Image
           src="/assets/hero-people.webp"
           alt="Pencil sketches of a parent photographing a child on a slide, a woman taking a selfie, a teen with a phone and grandparents at a birthday"
           width={1019}
           height={393}
+          sizes="(min-width: 1024px) 600px, 620px"
           className="hero-people h-auto w-[620px] max-w-[110%] opacity-90 lg:w-[600px]"
         />
-      </motion.div>
+      </div>
     </section>
   );
 }

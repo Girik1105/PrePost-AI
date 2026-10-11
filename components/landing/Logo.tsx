@@ -22,8 +22,8 @@ export function LogoMark({ className = "h-8 w-8" }: { className?: string }) {
 export default function Logo() {
   return (
     <span className="flex items-center gap-2">
-      <Image
-        src="/assets/brownie-wave.webp"
+      <Image sizes="28px"
+        src="/assets/brownie-mark.webp"
         alt=""
         width={32}
         height={37}

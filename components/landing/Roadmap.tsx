@@ -22,8 +22,7 @@ export default function Roadmap() {
       <ol className="relative mx-auto mt-16 max-w-3xl">
         <div aria-hidden className="absolute bottom-4 left-[22px] top-4 border-l-2 border-dashed border-line" />
         {ITEMS.map((it, i) => (
-          <Reveal key={it.title} delay={i * 0.06}>
-            <li className="relative flex gap-5 pb-8 last:pb-0">
+          <Reveal key={it.title} delay={i * 0.06} as="li" className="relative flex gap-5 pb-8 last:pb-0">
               <span className="relative z-10 grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line bg-card text-respect shadow-soft">
                 <it.icon size={19} aria-hidden />
               </span>
@@ -36,7 +35,7 @@ export default function Roadmap() {
                 </div>
                 <p className="mt-1 text-[15px] text-muted">{it.body}</p>
               </div>
-            </li>
+
           </Reveal>
         ))}
       </ol>

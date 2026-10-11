@@ -31,14 +31,14 @@ export default function ForEveryone() {
       <SectionHeader
         eyebrow="For everyone"
         title={<span id="everyone-title">{BRAND.forEveryone}</span>}
-        intro="We started with kids. The same check protects anyone who doesn't want a photo to give away where they are."
+        intro="We started with parents posting their kids. The same check protects anyone who doesn't want a photo to give away where they are."
       />
       <div className="mx-auto mt-16 grid max-w-6xl gap-6 md:grid-cols-3">
         {PERSONAS.map((p, i) => (
           <Reveal key={p.who} delay={i * 0.08}>
             <article className="lift h-full overflow-hidden rounded-[28px] border border-line bg-card shadow-soft">
               <div className="grid h-60 place-items-center bg-gradient-to-b from-paper2 to-card">
-                <Image src={`/assets/${p.img}.webp`} alt={p.alt} width={300} height={340} className="h-52 w-auto" />
+                <Image sizes="190px" src={`/assets/${p.img}.webp`} alt={p.alt} width={300} height={340} className="h-52 w-auto" />
               </div>
               <div className="p-7">
                 <h3 className="font-display text-2xl font-medium text-ink">{p.who}</h3>

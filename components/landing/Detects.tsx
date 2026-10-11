@@ -12,11 +12,13 @@ interface Risk {
   label: string;
   note: string;
   /** spots in the photo; tag is the label shown next to the spot when it's active */
-  spots?: { box: Box; blur?: Box; tag: string }[];
+  spots?: { box: Box; tag: string }[];
   kind?: "file" | "private";
 }
 
 // Boxes are fractions of the 1024x1024 scene (AI-generated with Aside, no real people or brands).
+// porch-scene-erased.webp is the same photo run through the /check eraser (LaMa inpainting), so in
+// the After state the details are gone from the pixels, not blurred.
 const RISKS: Risk[] = [
   {
     label: "House numbers and addresses",
@@ -34,8 +36,8 @@ const RISKS: Risk[] = [
   { label: "School names and uniforms", note: "Signs, crests, logos on a backpack.", spots: [{ box: { x: 0.84, y: 0.527, w: 0.088, h: 0.09 }, tag: "Maple Ridge Academy crest" }] },
   {
     label: "Bystander faces",
-    note: "Optional. Blur people who didn't ask to be in it.",
-    spots: [{ box: { x: 0.008, y: 0.236, w: 0.09, h: 0.166 }, blur: { x: 0.02, y: 0.236, w: 0.035, h: 0.04 }, tag: "A neighbor who didn't ask to be in it" }],
+    note: "Optional. Remove people who didn't ask to be in it.",
+    spots: [{ box: { x: 0.008, y: 0.236, w: 0.09, h: 0.166 }, tag: "A neighbor who didn't ask to be in it" }],
   },
   { label: "Location hidden in the file", note: "Your camera adds GPS on its own. PrePost strips it.", kind: "file" },
   { label: "Private moments", note: "Checked on your phone. Never uploaded.", kind: "private" },
@@ -110,21 +112,42 @@ export default function Detects() {
                 className="object-cover"
               />
 
+              <motion.div
+                aria-hidden
+                className="absolute inset-0"
+                initial={false}
+                animate={{ opacity: after ? 1 : 0 }}
+                transition={{ duration: 0.5, delay: after && !reduce ? 0.15 + PINNED * 0.12 + 0.4 : 0 }}
+              >
+                <Image src="/assets/catches/porch-scene-erased.webp" alt="" fill sizes="(min-width: 1024px) 620px, 92vw" className="object-cover" />
+              </motion.div>
+
               {RISKS.map((r, i) =>
                 r.spots?.map((s, j) => {
                   const on = active === i;
-                  const b = s.blur ?? s.box;
+                  const P = 0.014; // the eraser grew each box a little, so reveal a bit wider
+                  const b = { x: Math.max(0, s.box.x - P), y: Math.max(0, s.box.y - P), w: s.box.w + P * 2, h: s.box.h + P * 2 };
                   return (
                     <div key={`${i}-${j}`}>
-                      {/* blur layer for the After state */}
+                      {/* the erased pixels for this spot, revealed one spot at a time */}
                       <motion.div
                         aria-hidden
-                        className="absolute rounded-md"
-                        style={{ left: pct(b.x), top: pct(b.y), width: pct(b.w), height: pct(b.h), backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)", background: "rgba(255,255,255,0.08)" }}
+                        className="absolute overflow-hidden rounded-md"
+                        style={{ left: pct(b.x), top: pct(b.y), width: pct(b.w), height: pct(b.h) }}
                         initial={false}
-                        animate={{ opacity: after ? 1 : 0 }}
-                        transition={{ duration: 0.6, delay: after && !reduce ? i * 0.07 : 0 }}
-                      />
+                        animate={{ opacity: after ? 1 : 0, filter: after ? "blur(0px)" : "blur(6px)" }}
+                        transition={{ duration: 0.55, delay: after && !reduce ? 0.15 + i * 0.12 : 0 }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="/assets/catches/porch-scene-erased.webp"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="absolute max-w-none"
+                          style={{ width: `${100 / b.w}%`, height: `${100 / b.h}%`, left: `${(-b.x / b.w) * 100}%`, top: `${(-b.y / b.h) * 100}%` }}
+                        />
+                      </motion.div>
                       {/* outline when active */}
                       <motion.div
                         aria-hidden

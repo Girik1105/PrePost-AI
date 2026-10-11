@@ -273,6 +273,7 @@ export function Brownie({ pose, size = 80, className = "", alt = "" }: { pose: s
   return (
     <Image
       src={`/assets/brownie-${pose}.webp`}
+      sizes={`${size}px`}
       alt={alt}
       width={size}
       height={size}
@@ -286,6 +287,7 @@ export function AppIcon({ size = 40, className = "" }: { size?: number; classNam
   return (
     <Image
       src="/assets/app-icon.webp"
+      sizes={`${size}px`}
       alt=""
       width={size}
       height={size}

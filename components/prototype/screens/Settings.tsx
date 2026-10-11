@@ -1,7 +1,7 @@
 //created by kinjal
 "use client";
 
-import { Bell, Baby, Cpu, Images, MapPinOff, RotateCcw, ScanFace } from "lucide-react";
+import { Bell, Baby, Cpu, Images, GpsSlash as MapPinOff, ArrowCounterClockwise as RotateCcw, UserFocus as ScanFace } from "@phosphor-icons/react/dist/ssr";
 import { useProto } from "../PrototypeController";
 import { APP, LargeTitle, ListGroup, ListRow, ScreenBody, SectionHeader, TabBar, Toggle } from "../ui/kit";
 

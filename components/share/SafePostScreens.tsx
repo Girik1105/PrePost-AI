@@ -2,7 +2,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Download, Droplets, Eraser, Grid3x3, LoaderCircle, MapPinOff, ScanSearch, Share, ShieldCheck, Smartphone, Sparkles } from "lucide-react";
+import { Check, DownloadSimple as Download, Drop as Droplets, Eraser, GridNine as Grid3x3, CircleNotch as LoaderCircle, GpsSlash as MapPinOff, MagnifyingGlass as ScanSearch, Export as Share, ShieldCheck, DeviceMobile as Smartphone, Sparkle as Sparkles } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BRAND } from "@/lib/brand";
@@ -100,7 +100,7 @@ function Scan() {
                 className="flex h-[30px] w-[30px] items-center justify-center rounded-full"
                 style={{ background: state === "done" ? APP.sage : state === "now" ? APP.lavSoft : "#F0ECE5", color: state === "done" ? "#fff" : APP.lavDeep }}
               >
-                {state === "done" ? <Check className="h-4 w-4" strokeWidth={3} aria-hidden /> : state === "now" ? <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden /> : <I className="h-4 w-4 opacity-50" aria-hidden />}
+                {state === "done" ? <Check className="h-4 w-4" weight="bold" aria-hidden /> : state === "now" ? <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden /> : <I className="h-4 w-4 opacity-50" aria-hidden />}
               </span>
               <span className={`text-[15px] ${state === "todo" ? "text-[#A9A5AE]" : "font-medium text-[#1C1C1E]"}`}>{t}</span>
             </div>
@@ -295,7 +295,7 @@ function Done() {
           >
             <I className="h-5 w-5" style={{ color: APP.sageDeep }} aria-hidden />
             <span className="flex-1 text-[15px]">{t}</span>
-            <Check className="h-5 w-5" style={{ color: APP.sage }} strokeWidth={3} aria-hidden />
+            <Check className="h-5 w-5" style={{ color: APP.sage }} weight="bold" aria-hidden />
           </motion.div>
         ))}
       </div>

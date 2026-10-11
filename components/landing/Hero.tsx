@@ -12,7 +12,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { Play, Upload } from "lucide-react";
+import { Play, UploadSimple as Upload } from "@phosphor-icons/react/dist/ssr";
 import HeroPhone from "@/components/prototype/HeroPhone";
 import InkUnderline from "./InkUnderline";
 
@@ -142,7 +142,7 @@ export default function Hero() {
               href="#demo"
               className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/80 px-6 py-3.5 text-base font-semibold text-ink backdrop-blur transition-colors hover:bg-card"
             >
-              <Play size={18} className="fill-current" aria-hidden />
+              <Play size={18} weight="fill" aria-hidden />
               Watch the demo
             </a>
           </div>

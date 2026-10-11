@@ -2,7 +2,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUp, Mic, Undo2 } from "lucide-react";
+import { ArrowUp, Microphone as Mic, ArrowUUpLeft as Undo2 } from "@phosphor-icons/react/dist/ssr";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SCENES, VIEWBOX, type ObjMode } from "@/lib/scenes";
 import { SUGGESTIONS, isLocationCommand, parseCommand } from "@/lib/editCommands";
@@ -217,7 +217,7 @@ export default function TalkToEdit() {
           <Mic className="h-5 w-5" aria-hidden />
         </button>
         <button type="submit" aria-label="Send" className="flex h-[36px] w-[36px] items-center justify-center rounded-full text-[#1E2440]" style={{ background: draft ? APP.coral : "rgba(255,255,255,0.25)" }}>
-          <ArrowUp className="h-5 w-5" strokeWidth={2.6} aria-hidden />
+          <ArrowUp className="h-5 w-5" weight="bold" aria-hidden />
         </button>
       </form>
       <p className="px-6 pb-[30px] pt-2 text-center text-[11px] leading-snug text-white/50">

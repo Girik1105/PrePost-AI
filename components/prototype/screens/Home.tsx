@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BarChart3, ChevronRight, Images, ScanLine, ShieldCheck } from "lucide-react";
+import { ChartBar as BarChart3, CaretRight as ChevronRight, Images, Scan as ScanLine, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import { SCENES } from "@/lib/scenes";
 import { useProto } from "../PrototypeController";
 import { APP, Brownie, Card, LargeTitle, ScreenBody, SectionHeader, TabBar } from "../ui/kit";

@@ -2,7 +2,7 @@
 "use client";
 
 import { animate, AnimatePresence, motion, useMotionValue, useMotionValueEvent, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, ChevronsLeftRight, Clock, MapPin, Smartphone } from "lucide-react";
+import { ArrowRight, Check, ArrowsHorizontal as ChevronsLeftRight, Clock, MapPin, DeviceMobile as Smartphone } from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useRef, useState } from "react";
 import { SCENES } from "@/lib/scenes";
 import { useProto } from "../PrototypeController";

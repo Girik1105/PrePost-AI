@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Home, Images, BarChart3, Settings, ShieldCheck } from "lucide-react";
+import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, House as Home, Images, ChartBar as BarChart3, GearSix as Settings, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { useProto, type ScreenId } from "../PrototypeController";
@@ -94,7 +94,7 @@ export function NavBar({
         className="flex items-center rounded-lg px-1 py-1 text-[17px]"
         style={{ color }}
       >
-        <ChevronLeft className="h-[26px] w-[26px]" strokeWidth={2.4} aria-hidden />
+        <ChevronLeft className="h-[26px] w-[26px]" weight="bold" aria-hidden />
         {backLabel}
       </button>
       {title && (
@@ -133,7 +133,7 @@ export function TabBar({ hint }: { hint?: ScreenId }) {
             className={`flex w-[72px] flex-col items-center gap-[3px] rounded-xl py-1 ${hint === id && !driven ? "tap-hint" : ""}`}
             style={{ color: on ? APP.coral : "#9A97A0" }}
           >
-            <Icon className="h-[25px] w-[25px]" strokeWidth={on ? 2.4 : 2} aria-hidden />
+            <Icon className="h-[25px] w-[25px]" weight={on ? "fill" : "regular"} aria-hidden />
             <span className="text-[10px] font-medium">{label}</span>
           </button>
         );

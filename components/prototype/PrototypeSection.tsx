@@ -2,7 +2,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Hand, Pause, Play, RotateCcw } from "lucide-react";
+import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Hand, Pause, Play, ArrowCounterClockwise as RotateCcw } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import PhoneScreens from "./PhoneScreens";
@@ -64,7 +64,7 @@ function Controls({ sectionRef }: { sectionRef: React.RefObject<HTMLElement> }) 
               onClick={demo.start}
               className="mb-3 inline-flex items-center gap-2.5 whitespace-nowrap rounded-full bg-compassion px-5 py-3.5 text-base font-semibold sm:px-7 sm:py-4 sm:text-lg text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5 motion-reduce:transition-none"
             >
-              <Play className="h-5 w-5 fill-current" aria-hidden />
+              <Play className="h-5 w-5" weight="fill" aria-hidden />
               Play the 2-minute demo
             </button>
           </div>
@@ -118,7 +118,7 @@ function Controls({ sectionRef }: { sectionRef: React.RefObject<HTMLElement> }) 
               onClick={demo.toggle}
               className="inline-flex h-12 items-center gap-2 rounded-full bg-compassion px-6 font-semibold text-[#1E2440] shadow-soft"
             >
-              {demo.playing ? <Pause className="h-5 w-5 fill-current" aria-hidden /> : <Play className="h-5 w-5 fill-current" aria-hidden />}
+              {demo.playing ? <Pause className="h-5 w-5" weight="fill" aria-hidden /> : <Play className="h-5 w-5" weight="fill" aria-hidden />}
               {demo.playing ? "Pause" : "Play"}
             </button>
             <CtrlButton label="Next step" onClick={demo.next}>

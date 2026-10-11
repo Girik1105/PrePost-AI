@@ -2,7 +2,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Bookmark, ChevronLeft, ChevronRight, Clapperboard, Heart, Home, MapPin, MessageCircle, Music2, PlusSquare, Search, Send, Tag, Users, Ellipsis } from "lucide-react";
+import { BookmarkSimple as Bookmark, CaretLeft as ChevronLeft, CaretRight as ChevronRight, FilmSlate as Clapperboard, Heart, House as Home, MapPin, ChatCircle as MessageCircle, MusicNotes as Music2, PlusSquare, MagnifyingGlass as Search, PaperPlaneTilt as Send, Tag, Users, DotsThree as Ellipsis } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BRAND } from "@/lib/brand";
@@ -185,7 +185,7 @@ export function Posted() {
           </button>
           <div className="flex items-center gap-4 px-3 pt-3">
             <button type="button" onClick={() => setLiked(!liked)} aria-label="Like">
-              <Heart className={`h-[25px] w-[25px] ${liked ? "fill-[#FF3040] text-[#FF3040]" : ""}`} aria-hidden />
+              <Heart className={`h-[25px] w-[25px] ${liked ? "text-[#FF3040]" : ""}`} weight={liked ? "fill" : "regular"} aria-hidden />
             </button>
             <MessageCircle className="h-[25px] w-[25px] -scale-x-100" aria-hidden />
             <Send className="h-[24px] w-[24px]" aria-hidden />
@@ -223,7 +223,7 @@ export function Posted() {
 
       {/* tab bar */}
       <div className="absolute inset-x-0 bottom-0 flex h-[84px] items-start justify-around border-t border-[#EFEFEF] bg-white pt-[12px]">
-        <Home className="h-[26px] w-[26px] fill-black" aria-hidden />
+        <Home className="h-[26px] w-[26px]" weight="fill" aria-hidden />
         <Search className="h-[26px] w-[26px]" aria-hidden />
         <PlusSquare className="h-[26px] w-[26px]" aria-hidden />
         <Clapperboard className="h-[26px] w-[26px]" aria-hidden />

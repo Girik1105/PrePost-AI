@@ -1,7 +1,7 @@
 //created by kinjal
 "use client";
 
-import { Droplets, Eraser, Grid3x3 } from "lucide-react";
+import { Drop as Droplets, Eraser, GridNine as Grid3x3 } from "@phosphor-icons/react/dist/ssr";
 import type { RedactStyle } from "@/lib/redact";
 
 const METHODS: { id: RedactStyle; label: string; note: string; Icon: typeof Eraser; ai?: boolean }[] = [

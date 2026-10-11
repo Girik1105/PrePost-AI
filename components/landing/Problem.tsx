@@ -1,6 +1,6 @@
 //created by kinjal
 import Image from "next/image";
-import { MapPin } from "lucide-react";
+import { MapPin } from "@phosphor-icons/react/dist/ssr";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 
@@ -20,7 +20,7 @@ function HiddenDataArt() {
         aria-hidden
         className="absolute left-3 top-3 flex -rotate-2 items-center gap-1.5 whitespace-nowrap rounded-full border border-[#E6DCCD] bg-white/95 px-2.5 py-1 text-[11px] font-semibold tabular-nums text-[#1E2440] shadow-soft"
       >
-        <MapPin size={12} className="shrink-0 fill-[#E8846B]/30 text-[#A84830]" />
+        <MapPin size={12} weight="duotone" className="shrink-0 text-[#A84830]" />
         40.7128° N, 74.0060° W
       </p>
     </div>

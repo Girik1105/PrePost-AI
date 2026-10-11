@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronLeft, Copy, Ellipsis, EyeOff, Heart, Info, Images, Library, Mail, MessageCircle, Play, Search, Share, SquarePlus, Trash2, Tv, UserRound, X, FolderOpen, Smartphone, Layers } from "lucide-react";
+import { CaretLeft as ChevronLeft, Copy, DotsThree as Ellipsis, EyeSlash as EyeOff, Heart, Info, Images, ImagesSquare as Library, EnvelopeSimple as Mail, ChatCircle as MessageCircle, Play, MagnifyingGlass as Search, Export as Share, PlusSquare as SquarePlus, Trash as Trash2, Television as Tv, User as UserRound, X, FolderOpen, DeviceMobile as Smartphone, Stack as Layers } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { BRAND_PATHS } from "@/lib/brandIcons";
@@ -103,7 +103,7 @@ export function Viewer({ dimmed = false }: { dimmed?: boolean }) {
     <div className="absolute inset-0 bg-white">
       <div className="absolute inset-x-0 top-[50px] flex h-[48px] items-center justify-between px-2">
         <button type="button" onClick={() => go("gallery")} className="flex items-center" style={{ color: BLUE }} aria-label="Back to library">
-          <ChevronLeft className="h-[30px] w-[30px]" strokeWidth={2.2} aria-hidden />
+          <ChevronLeft className="h-[30px] w-[30px]" weight="bold" aria-hidden />
         </button>
         <div className="text-center leading-tight">
           <p className="text-[15px] font-semibold">Today</p>
@@ -230,7 +230,7 @@ export function ShareSheet() {
             </p>
           </div>
           <button type="button" onClick={() => go("viewer")} aria-label="Close" className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#E3E3E8] text-[#8A8A8E]">
-            <X className="h-4 w-4" strokeWidth={2.6} aria-hidden />
+            <X className="h-4 w-4" weight="bold" aria-hidden />
           </button>
         </div>
 
@@ -263,7 +263,7 @@ export function ShareSheet() {
           </span>
           <span className="flex w-[62px] shrink-0 flex-col items-center gap-[6px]">
             <IconTile bg="linear-gradient(#67E26F,#2DBE38)">
-              <MessageCircle className="h-[32px] w-[32px] fill-white" aria-hidden />
+              <MessageCircle className="h-[32px] w-[32px]" weight="fill" aria-hidden />
             </IconTile>
             <span className="text-[11px] text-[#3C3C43]">Messages</span>
           </span>

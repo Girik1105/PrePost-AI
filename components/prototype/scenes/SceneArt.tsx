@@ -2,7 +2,7 @@
 "use client";
 
 import { useId } from "react";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import { SCENES, VIEWBOX, type ObjMode, type SceneId } from "@/lib/scenes";
 import { Adult, Kid, SceneContext, Sensitive } from "./Sensitive";
 

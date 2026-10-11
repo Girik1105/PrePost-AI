@@ -3,7 +3,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { Camera, Flashlight } from "lucide-react";
+import { Camera, Flashlight } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { BRAND } from "@/lib/brand";
 import { useProto } from "../PrototypeController";

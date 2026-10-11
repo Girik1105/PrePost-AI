@@ -1,16 +1,5 @@
 //created by kinjal
-import {
-  School,
-  House,
-  Car,
-  BadgeCheck,
-  CreditCard,
-  QrCode,
-  MonitorSmartphone,
-  MapPin,
-  UserRound,
-  ShieldOff,
-} from "lucide-react";
+import { GraduationCap as School, House, Car, SealCheck as BadgeCheck, CreditCard, QrCode, Devices as MonitorSmartphone, MapPin, User as UserRound, ShieldSlash as ShieldOff } from "@phosphor-icons/react/dist/ssr";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 

@@ -2,7 +2,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Hand, Pause, Play, RotateCcw } from "lucide-react";
+import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Hand, Pause, Play, ArrowCounterClockwise as RotateCcw } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import PhoneFrame from "@/components/prototype/PhoneFrame";
@@ -136,7 +136,7 @@ function Controls() {
             onClick={f.play}
             className="mb-3 inline-flex items-center gap-2.5 whitespace-nowrap rounded-full bg-compassion px-5 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5 sm:px-7 sm:py-4 sm:text-lg"
           >
-            <Play className="h-5 w-5 fill-current" aria-hidden /> Play the share flow
+            <Play className="h-5 w-5" weight="fill" aria-hidden /> Play the share flow
           </button>
         </div>
       ) : (
@@ -145,7 +145,7 @@ function Controls() {
             <ChevronLeft className="h-5 w-5" aria-hidden />
           </CtrlButton>
           <button type="button" onClick={f.togglePlay} className="inline-flex h-12 items-center gap-2 rounded-full bg-compassion px-6 font-semibold text-[#1E2440] shadow-soft">
-            {f.playing ? <Pause className="h-5 w-5 fill-current" aria-hidden /> : <Play className="h-5 w-5 fill-current" aria-hidden />}
+            {f.playing ? <Pause className="h-5 w-5" weight="fill" aria-hidden /> : <Play className="h-5 w-5" weight="fill" aria-hidden />}
             {f.playing ? "Pause" : "Play"}
           </button>
           <CtrlButton label="Next step" onClick={f.next}>

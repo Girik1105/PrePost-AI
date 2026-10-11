@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { List as Menu, Moon, Sun, X } from "@phosphor-icons/react/dist/ssr";
 import Logo from "./Logo";
 
 const LINKS = [

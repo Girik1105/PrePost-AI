@@ -1,6 +1,6 @@
 //created by kinjal
 import Image from "next/image";
-import { CheckCircle2, AlertCircle, XCircle, Heart } from "lucide-react";
+import { CheckCircle as CheckCircle2, WarningCircle as AlertCircle, XCircle, Heart } from "@phosphor-icons/react/dist/ssr";
 import { BRAND } from "@/lib/brand";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";

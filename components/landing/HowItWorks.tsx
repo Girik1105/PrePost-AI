@@ -1,6 +1,6 @@
 //created by kinjal
 import Image from "next/image";
-import { Images, ScanLine, Sparkles, ShieldCheck } from "lucide-react";
+import { Images, Scan as ScanLine, Sparkle as Sparkles, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 

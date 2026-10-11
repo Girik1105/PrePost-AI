@@ -1,5 +1,5 @@
 //created by kinjal
-import { Landmark, Sparkles, ShieldCheck, HeartHandshake } from "lucide-react";
+import { Bank as Landmark, Sparkle as Sparkles, ShieldCheck, Handshake as HeartHandshake } from "@phosphor-icons/react/dist/ssr";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 

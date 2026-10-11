@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Flame, Sparkles } from "lucide-react";
+import { Flame, Sparkle as Sparkles } from "@phosphor-icons/react/dist/ssr";
 import { useProto } from "../PrototypeController";
 import { APP, Brownie, Card, LargeTitle, ScreenBody, SectionHeader, TabBar } from "../ui/kit";
 

@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import { BRAND } from "@/lib/brand";
 import { SCENES } from "@/lib/scenes";
 import { useProto } from "../PrototypeController";
@@ -61,7 +61,7 @@ function AlbumTile({ id, edits, onClick }: { id: keyof typeof SCENES; edits: Rec
     <button type="button" onClick={onClick} className="relative block aspect-square w-full overflow-hidden rounded-[4px]" aria-label={`${SCENES[id].title}, safe version`}>
       <SceneArt id={id} edits={edits} className="h-full w-full" />
       <span className="absolute bottom-[6px] right-[6px] flex h-[24px] w-[24px] items-center justify-center rounded-full border-2 border-white shadow" style={{ background: APP.sage }}>
-        <ShieldCheck className="h-[13px] w-[13px] text-white" strokeWidth={2.6} aria-hidden />
+        <ShieldCheck className="h-[13px] w-[13px] text-white" weight="bold" aria-hidden />
       </span>
     </button>
   );

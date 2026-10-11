@@ -1,5 +1,5 @@
 //created by kinjal
-import { Globe, Type, History, Users, Stethoscope } from "lucide-react";
+import { Globe, TextT as Type, ClockCounterClockwise as History, Users, Stethoscope } from "@phosphor-icons/react/dist/ssr";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 

@@ -6,10 +6,10 @@ import { Menu, Moon, Sun, X } from "lucide-react";
 import Logo from "./Logo";
 
 const LINKS = [
-  { href: "#how", label: "How it works" },
-  { href: "#demo", label: "Demo" },
-  { href: "#privacy", label: "Privacy" },
-  { href: "#team", label: "Team" },
+  { href: "/#how", label: "How it works" },
+  { href: "/#demo", label: "Demo" },
+  { href: "/#privacy", label: "Privacy" },
+  { href: "/#team", label: "Team" },
 ];
 
 type Theme = "light" | "dark";
@@ -53,7 +53,7 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Main">
-        <a href="#top" className="rounded-lg" aria-label="SafePost home">
+        <a href="/#top" className="rounded-lg" aria-label="SafePost home">
           <Logo />
         </a>
         <ul className="hidden items-center gap-7 md:flex">
@@ -75,10 +75,10 @@ export default function Nav() {
             {theme === "dark" ? <Sun size={19} /> : <Moon size={19} />}
           </button>
           <a
-            href="#demo"
+            href="/check"
             className="hidden rounded-full bg-compassion px-5 py-2.5 text-sm font-semibold text-[#1E2440] shadow-soft transition-transform hover:-translate-y-0.5 sm:inline-block"
           >
-            Watch the demo
+            Check a photo
           </a>
           <button
             type="button"
@@ -93,7 +93,7 @@ export default function Nav() {
       </nav>
       {open && (
         <ul className="border-t border-line/70 px-4 pb-4 pt-2 md:hidden">
-          {[...LINKS, { href: "#demo", label: "Watch the demo" }].map((l, i) => (
+          {[...LINKS, { href: "/check", label: "Check a photo" }].map((l, i) => (
             <li key={l.label + i}>
               <a
                 href={l.href}

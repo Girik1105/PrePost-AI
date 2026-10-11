@@ -48,3 +48,22 @@ section[id] {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .footer-bg { background: #0F1226; }
 }
+
+/* Check a photo: a band of light that sweeps down the photo while it is scanned */
+@keyframes scan-sweep {
+  0% { top: -6rem; }
+  100% { top: 100%; }
+}
+.scan-sweep {
+  top: -6rem;
+  background: linear-gradient(to bottom, transparent, rgb(var(--compassion) / 0.35) 70%, rgb(255 255 255 / 0.9) 98%, transparent);
+  animation: scan-sweep 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scan-sweep { display: none; }
+}
+/* The compare slider is an invisible range input, so its focus ring goes on the knob */
+div:has(> .compare-range:focus-visible) .compare-knob {
+  outline: 3px solid rgb(var(--compassion));
+  outline-offset: 3px;
+}

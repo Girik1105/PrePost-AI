@@ -12,7 +12,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { ArrowDown, Play } from "lucide-react";
+import { Play, Upload } from "lucide-react";
 import HeroPhone from "@/components/prototype/HeroPhone";
 import InkUnderline from "./InkUnderline";
 
@@ -132,18 +132,18 @@ export default function Hero() {
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <a
-              href="#demo"
+              href="/check"
               className="inline-flex items-center gap-2 rounded-full bg-compassion px-6 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5"
+            >
+              <Upload size={18} aria-hidden />
+              Check a photo
+            </a>
+            <a
+              href="#demo"
+              className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/80 px-6 py-3.5 text-base font-semibold text-ink backdrop-blur transition-colors hover:bg-card"
             >
               <Play size={18} className="fill-current" aria-hidden />
               Watch the demo
-            </a>
-            <a
-              href="#catches"
-              className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/80 px-6 py-3.5 text-base font-semibold text-ink backdrop-blur transition-colors hover:bg-card"
-            >
-              See what it catches
-              <ArrowDown size={18} aria-hidden />
             </a>
           </div>
         </div>

@@ -30,6 +30,7 @@ license plates, card numbers, IDs, boarding passes, QR codes, screens showing em
 Do not flag faces or bodies. Never describe people's appearance.
 For each finding give a short label, a category, one plain sentence on why it matters, and a bounding box
 as fractions of the image width and height (x, y = top-left corner, all values between 0 and 1).
+Make each box tight but cover the whole object: the entire ID card, card, boarding pass or label, not just one line of text on it.
 exposureScore is 0 to 100 (0 = nothing personal). containsChild is true if a child appears.
 verdict is only for photos with a child (safe, caution, dont_post), otherwise null.
 whyItMatters is two or three warm, plain sentences, coach tone, no scolding.`;

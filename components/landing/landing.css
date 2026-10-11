@@ -67,3 +67,9 @@ div:has(> .compare-range:focus-visible) .compare-knob {
   outline: 3px solid rgb(var(--compassion));
   outline-offset: 3px;
 }
+
+/* Humanity 101 line art is pure black: flip it to light on dark backgrounds. */
+:root[data-theme="dark"] .h4h-line { filter: invert(1) brightness(0.92); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .h4h-line { filter: invert(1) brightness(0.92); }
+}

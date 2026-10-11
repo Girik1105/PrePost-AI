@@ -46,7 +46,7 @@ export default function SafePostSheet() {
           Cancel
         </button>
         <span className="absolute left-1/2 flex -translate-x-1/2 items-center gap-[6px] text-[17px] font-semibold">
-          <Image src="/assets/app-icon.webp" alt="" width={22} height={22} className="h-[22px] w-[22px] rounded-[6px]" />
+          <Image sizes="22px" src="/assets/app-icon.webp" alt="" width={22} height={22} className="h-[22px] w-[22px] rounded-[6px]" />
           {BRAND.name}
         </span>
         <span className="w-[52px]" />

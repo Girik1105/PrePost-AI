@@ -23,9 +23,9 @@ export default function LockScreen() {
 
   return (
     <div className="absolute inset-0 overflow-hidden" style={{ background: "linear-gradient(170deg,#B9B0DE 0%,#E9C2C6 48%,#F6D9B8 100%)" }}>
-      <Image src="/assets/cloud-a.webp" alt="" width={320} height={206} className="absolute -left-16 top-[300px] w-[300px] opacity-80" />
-      <Image src="/assets/cloud-b.webp" alt="" width={420} height={110} className="absolute -right-24 top-[520px] w-[380px] opacity-70" />
-      <Image src="/assets/brownie-cloud.webp" alt="" width={120} height={120} className="absolute bottom-[150px] right-[36px] w-[96px] opacity-90" />
+      <Image sizes="300px" src="/assets/cloud-a.webp" alt="" width={320} height={206} className="absolute -left-16 top-[300px] w-[300px] opacity-80" />
+      <Image sizes="380px" src="/assets/cloud-b.webp" alt="" width={420} height={110} className="absolute -right-24 top-[520px] w-[380px] opacity-70" />
+      <Image sizes="96px" src="/assets/brownie-cloud.webp" alt="" width={120} height={120} className="absolute bottom-[150px] right-[36px] w-[96px] opacity-90" />
 
       <div className="relative pt-[78px] text-center text-white">
         <p className="text-[19px] font-semibold opacity-90">Saturday, October 10</p>

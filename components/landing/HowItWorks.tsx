@@ -23,15 +23,14 @@ export default function HowItWorks() {
         {/* Connecting line on wide screens */}
         <div aria-hidden className="absolute left-[12%] right-[12%] top-[92px] hidden border-t-2 border-dashed border-compassion/40 lg:block" />
         {STEPS.map((s, i) => (
-          <Reveal key={s.title} delay={i * 0.1}>
-            <li className="relative flex flex-col items-center text-center">
+          <Reveal key={s.title} delay={i * 0.1} as="li" className="relative flex flex-col items-center text-center">
               <div className="relative grid h-[184px] w-[184px] place-items-center rounded-full border border-line bg-card shadow-soft lift">
-                <Image src={`/assets/${s.img}.webp`} alt="" width={240} height={240} className="h-32 w-auto" />
+                <Image sizes="128px" src={`/assets/${s.img}.webp`} alt="" width={240} height={240} className="h-32 w-auto" />
               </div>
               <p className="mt-6 text-sm font-semibold text-compassion-deep">Step {i + 1}</p>
               <h3 className="mt-1 max-w-[16rem] font-display text-xl font-medium leading-snug text-ink">{s.title}</h3>
               <p className="mt-2 max-w-[16rem] text-[15px] leading-relaxed text-muted">{s.body}</p>
-            </li>
+
           </Reveal>
         ))}
       </ol>

@@ -96,3 +96,15 @@ div:has(> .compare-range:focus-visible) .compare-knob {
   .lift, .press { transition: none; }
   .lift:hover, .press:hover, .press:active { transform: none; }
 }
+
+/* Hero entrance in pure CSS: runs from first paint, before hydration, so it never delays LCP.
+   The headline stays fully opaque (only moves) so it counts as painted immediately. */
+@keyframes hero-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes hero-title-rise { from { transform: translateY(14px); } to { transform: none; } }
+@keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
+.hero-in { animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-title-in { animation: hero-title-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-fade { animation: hero-fade 1s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-in, .hero-title-in, .hero-fade { animation: none; }
+}

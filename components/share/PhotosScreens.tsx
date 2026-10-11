@@ -10,7 +10,7 @@ import { BRAND } from "@/lib/brand";
 import { MAIN, ROLL } from "./photos";
 import { useFlow } from "./ShareFlowContext";
 
-const BLUE = "#007AFF";
+const BLUE = "#0066CC"; // iOS blue, one step darker so labels pass AA contrast
 
 /** Pulsing ring on the next control when the visitor explores on their own. */
 export function hintCls(on: boolean) {
@@ -84,7 +84,7 @@ export function Gallery() {
           { l: "Albums", I: Images, on: false },
           { l: "Search", I: Search, on: false },
         ].map(({ l, I, on }) => (
-          <span key={l} className="flex w-[80px] flex-col items-center gap-[2px]" style={{ color: on ? BLUE : "#999" }}>
+          <span key={l} className="flex w-[80px] flex-col items-center gap-[2px]" style={{ color: on ? BLUE : "#6E6E73" }}>
             <I className="h-[24px] w-[24px]" aria-hidden />
             <span className="text-[10px] font-medium">{l}</span>
           </span>
@@ -273,7 +273,7 @@ export function ShareSheet() {
             onClick={() => go("scan")}
             className={`flex w-[62px] shrink-0 flex-col items-center gap-[6px] rounded-[16px] ${hintCls(!driven)}`}
           >
-            <Image src="/assets/app-icon.webp" alt="" width={60} height={60} className="h-[60px] w-[60px] rounded-[14px] object-cover" />
+            <Image sizes="60px" src="/assets/app-icon.webp" alt="" width={60} height={60} className="h-[60px] w-[60px] rounded-[14px] object-cover" />
             <span className="text-[11px] font-medium text-[#1C1C1E]">{BRAND.name}</span>
           </button>
           <span className="flex w-[62px] shrink-0 flex-col items-center gap-[6px]">

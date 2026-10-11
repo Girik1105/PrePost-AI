@@ -23,11 +23,10 @@ export default function Team() {
       />
       <ul className="mx-auto mt-14 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {MEMBERS.map((m, i) => (
-          <Reveal key={m.name} delay={i * 0.06}>
-            <li className="group flex h-full flex-col items-center rounded-[28px] border border-line bg-card p-7 text-center shadow-soft lift">
+          <Reveal key={m.name} delay={i * 0.06} as="li" className="group flex h-full flex-col items-center rounded-[28px] border border-line bg-card p-7 text-center shadow-soft lift">
               {/* The drawings sit in a torn watercolor circle; a round crop keeps just the portrait. */}
               <span className="block h-32 w-32 overflow-hidden rounded-full bg-[#1E2440] ring-4 ring-paper2">
-                <Image
+                <Image sizes="160px"
                   src={`/assets/${m.img}.webp`}
                   alt={`Illustrated portrait of ${m.name}`}
                   width={360}
@@ -37,7 +36,7 @@ export default function Team() {
               </span>
               <h3 className="mt-5 font-semibold text-ink">{m.name}</h3>
               <p className="mt-1 text-sm text-muted">{m.role}</p>
-            </li>
+
           </Reveal>
         ))}
       </ul>

@@ -25,7 +25,7 @@ export default function SectionHeader({
   return (
     <Reveal className={`${centered ? "mx-auto text-center" : ""} max-w-2xl`}>
       {mascot && (
-        <Image
+        <Image sizes="80px"
           src={`/assets/${mascot}.webp`}
           alt={mascotAlt ?? ""}
           width={88}

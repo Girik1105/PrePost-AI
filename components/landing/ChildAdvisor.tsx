@@ -64,7 +64,7 @@ export default function ChildAdvisor() {
                 stranger to find her at pickup time. Removing these keeps the moment and loses the risk.
               </p>
               <div className="mt-6 flex items-center gap-4 border-t border-line pt-6">
-                <Image src="/assets/brownie-thinking.webp" alt="" width={80} height={92} className="h-16 w-auto shrink-0" />
+                <Image sizes="56px" src="/assets/brownie-thinking.webp" alt="" width={80} height={92} className="h-16 w-auto shrink-0" />
                 <p className="font-display text-xl italic leading-snug text-reflection-deep">
                   Would {BRAND.kid} be okay with this at 16?
                 </p>

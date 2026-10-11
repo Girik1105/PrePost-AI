@@ -130,7 +130,7 @@ function Controls() {
     <div ref={rootRef} className="w-full max-w-xl">
       {!f.started ? (
         <div className="flex items-end gap-4">
-          <Image src="/assets/brownie-camera.webp" alt="" width={110} height={150} className="h-[96px] w-auto animate-bob motion-reduce:animate-none sm:h-[112px]" />
+          <Image sizes="100px" src="/assets/brownie-camera.webp" alt="" width={110} height={150} className="h-[96px] w-auto animate-bob motion-reduce:animate-none sm:h-[112px]" />
           <button
             type="button"
             onClick={f.play}

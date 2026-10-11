@@ -57,7 +57,7 @@ function Stamp() {
         </text>
       </motion.svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <Image
+        <Image sizes="120px"
           src="/assets/brownie-cloud.webp"
           alt="Brownie mascot sitting on a cloud"
           width={180}
@@ -93,7 +93,7 @@ export default function Footer() {
         <div className="mt-20 grid gap-10 border-t border-[#FBF6EE]/15 pt-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <p className="flex items-center gap-2 font-display text-2xl font-semibold">
-              <Image src="/assets/brownie-wave.webp" alt="" width={32} height={37} className="h-8 w-auto" />
+              <Image sizes="28px" src="/assets/brownie-wave.webp" alt="" width={32} height={37} className="h-8 w-auto" />
               {BRAND.name}
             </p>
             <p className="mt-3 max-w-xs text-[15px] leading-relaxed text-[#FBF6EE]/70">
@@ -127,9 +127,11 @@ export default function Footer() {
       </div>
 
       {/* oversized wordmark peeking off the bottom edge */}
-      <p aria-hidden className="pointer-events-none select-none text-center font-display text-[26vw] font-semibold leading-[0.72] tracking-tight text-[#FBF6EE]/[0.06]">
-        {BRAND.name}
-      </p>
+      <svg aria-hidden viewBox="0 0 1000 200" className="pointer-events-none mt-2 block w-full select-none" preserveAspectRatio="xMidYMax meet">
+        <text x="500" y="200" textAnchor="middle" className="font-display" style={{ fontSize: 260, fontWeight: 600, letterSpacing: -6 }} fill="#FBF6EE" fillOpacity={0.06}>
+          {BRAND.name}
+        </text>
+      </svg>
     </footer>
   );
 }

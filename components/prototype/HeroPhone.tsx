@@ -40,7 +40,7 @@ export default function HeroPhone({ className = "" }: { className?: string }) {
   };
   return (
     <div className={`relative ${className}`}>
-      <Image
+      <Image sizes="104px"
         src="/assets/brownie-peek.webp"
         alt="The PrePost brownie peeking over the phone"
         width={200}

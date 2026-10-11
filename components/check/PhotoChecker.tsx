@@ -395,8 +395,8 @@ export default function PhotoChecker() {
         <div className="hero-dim absolute inset-0" />
         <div className="absolute inset-0 bg-gradient-to-b from-paper/40 via-paper/70 to-paper" />
       </div>
-      <Image src="/assets/cloud-a.webp" alt="" aria-hidden width={800} height={516} className="pointer-events-none absolute -left-24 top-28 -z-10 w-[260px] opacity-80 sm:w-[340px]" />
-      <Image src="/assets/cloud-b.webp" alt="" aria-hidden width={966} height={254} className="pointer-events-none absolute -right-28 top-72 -z-10 hidden w-[420px] opacity-90 md:block" />
+      <Image sizes="260px" src="/assets/cloud-a.webp" alt="" aria-hidden width={800} height={516} className="pointer-events-none absolute -left-24 top-28 -z-10 w-[260px] opacity-80 sm:w-[340px]" />
+      <Image sizes="420px" src="/assets/cloud-b.webp" alt="" aria-hidden width={966} height={254} className="pointer-events-none absolute -right-28 top-72 -z-10 hidden w-[420px] opacity-90 md:block" />
 
       <div className="mx-auto max-w-6xl px-4 pb-24 pt-28 sm:px-6 sm:pt-36">
         <header className="mx-auto max-w-3xl text-center">
@@ -429,7 +429,7 @@ export default function PhotoChecker() {
           <>
             <div className="relative mx-auto mt-28 max-w-2xl sm:mt-32">
               {/* The brownie peeks over the top edge of the print */}
-              <Image
+              <Image sizes="132px"
                 src="/assets/brownie-peek.webp"
                 alt=""
                 aria-hidden
@@ -502,7 +502,7 @@ export default function PhotoChecker() {
                     </p>
                   )}
                 </div>
-                <p className="mt-4 text-center font-display text-[15px] italic text-[#8A8790]">JPEG, HEIC, PNG, WebP and more</p>
+                <p className="mt-4 text-center font-display text-[15px] italic text-[#6B6878]">JPEG, HEIC, PNG, WebP and more</p>
               </motion.div>
             </div>
 

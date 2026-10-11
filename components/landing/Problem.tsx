@@ -77,7 +77,7 @@ export default function Problem() {
                     <span className="sr-only">{c.alt}</span>
                   </>
                 ) : (
-                  <Image
+                  <Image sizes="180px"
                     src={`/assets/${c.img}.webp`}
                     alt={c.alt}
                     width={320}

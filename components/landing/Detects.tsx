@@ -142,6 +142,8 @@ export default function Detects() {
                         <img
                           src="/assets/catches/porch-scene-erased.webp"
                           alt=""
+                          loading="lazy"
+                          decoding="async"
                           className="absolute max-w-none"
                           style={{ width: `${100 / b.w}%`, height: `${100 / b.h}%`, left: `${(-b.x / b.w) * 100}%`, top: `${(-b.y / b.h) * 100}%` }}
                         />

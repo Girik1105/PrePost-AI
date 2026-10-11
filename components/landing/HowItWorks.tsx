@@ -1,14 +1,13 @@
 //created by kinjal
 import Image from "next/image";
-import { Images, Scan as ScanLine, Sparkle as Sparkles, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 
 const STEPS = [
-  { img: "step-access", icon: Images, title: "Give photo access once", body: "Pick all photos or just a few. You can change it anytime." },
-  { img: "step-scan", icon: ScanLine, title: "SafePost scans on your phone", body: "New photos get checked quietly in the background." },
-  { img: "step-fix", icon: Sparkles, title: "It blurs, strips location, and explains", body: "Each finding comes with a plain reason and a fix." },
-  { img: "step-ready", icon: ShieldCheck, title: "Your safe version is ready to post", body: "Clean copies wait in your Safe to Share album." },
+  { img: "step-access", title: "Give photo access once", body: "Pick all photos or just a few. You can change it anytime." },
+  { img: "step-scan", title: "SafePost scans on your phone", body: "New photos get checked quietly in the background." },
+  { img: "step-fix", title: "It blurs, strips location, and explains", body: "Each finding comes with a plain reason and a fix." },
+  { img: "step-ready", title: "Your safe version is ready to post", body: "Clean copies wait in your Safe to Share album." },
 ];
 
 export default function HowItWorks() {
@@ -28,9 +27,6 @@ export default function HowItWorks() {
             <li className="relative flex flex-col items-center text-center">
               <div className="relative grid h-[184px] w-[184px] place-items-center rounded-full border border-line bg-card shadow-soft">
                 <Image src={`/assets/${s.img}.webp`} alt="" width={240} height={240} className="h-32 w-auto" />
-                <span className="absolute -right-1 top-3 grid h-11 w-11 place-items-center rounded-full bg-respect text-paper shadow-soft">
-                  <s.icon size={20} aria-hidden />
-                </span>
               </div>
               <p className="mt-6 text-sm font-semibold text-compassion-deep">Step {i + 1}</p>
               <h3 className="mt-1 max-w-[16rem] font-display text-xl font-medium leading-snug text-ink">{s.title}</h3>

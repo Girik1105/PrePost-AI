@@ -3,7 +3,6 @@ import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
 import Problem from "@/components/landing/Problem";
 import HowItWorks from "@/components/landing/HowItWorks";
-import PrototypeSection from "@/components/prototype/PrototypeSection";
 import Detects from "@/components/landing/Detects";
 import ChildAdvisor from "@/components/landing/ChildAdvisor";
 import TalkToEdit from "@/components/landing/TalkToEdit";
@@ -29,7 +28,6 @@ export default function Home() {
         <Hero />
         <Problem />
         <HowItWorks />
-        <PrototypeSection />
         <Detects />
         <ChildAdvisor />
         <TalkToEdit />

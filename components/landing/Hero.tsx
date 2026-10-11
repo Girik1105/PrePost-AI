@@ -139,11 +139,11 @@ export default function Hero() {
               Check a photo
             </a>
             <a
-              href="#demo"
+              href="/share"
               className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/80 px-6 py-3.5 text-base font-semibold text-ink backdrop-blur transition-colors hover:bg-card"
             >
               <Play size={18} weight="fill" aria-hidden />
-              Watch the demo
+              See it in action
             </a>
           </div>
         </div>

@@ -42,6 +42,12 @@ const STEPS = [
   { Icon: Download, title: "You save a clean copy", body: "Blur, pixelate or erase each one, then download the safe version." },
 ];
 
+const SAMPLE = {
+  src: "/assets/sample-photo.jpg",
+  thumb: "/assets/sample-photo-thumb.webp",
+  alt: "Two teammates at a hackathon table, with name badges, a phone and a driver's license in view",
+};
+
 const VERDICT_INK: Record<Exclude<Verdict, null>, string> = { safe: "ink-safe", caution: "ink-caution", dont_post: "ink-danger" };
 
 /** Redraws the photo on a canvas, which drops EXIF (location, device, time). */
@@ -378,6 +384,22 @@ export default function PhotoChecker() {
 
   const pct = (v: number) => `${v * 100}%`;
 
+  // A ready-made photo so anyone (judges included) can try the full flow without one of their own.
+  const [loadingSample, setLoadingSample] = useState(false);
+  const trySample = async () => {
+    setLoadingSample(true);
+    try {
+      const res = await fetch(SAMPLE.src);
+      if (!res.ok) throw new Error();
+      await start(new File([await res.blob()], "prepost-sample.jpg", { type: "image/jpeg" }));
+    } catch {
+      setError("The sample photo didn't load. Try again, or use one of your own.");
+      setPhase("error");
+    } finally {
+      setLoadingSample(false);
+    }
+  };
+
   const heading =
     phase === "scanning" ? "Looking closely." : phase === "ready" ? "Here\u2019s your safe version." : "Check it before it\u2019s ink.";
   const sub =
@@ -427,6 +449,34 @@ export default function PhotoChecker() {
 
         {(phase === "idle" || phase === "error") && (
           <>
+            <div className="mx-auto mt-10 max-w-2xl">
+              <button
+                type="button"
+                onClick={trySample}
+                disabled={loadingSample || opening}
+                className="press group flex w-full items-center gap-4 rounded-2xl border border-line bg-card/95 p-3 text-left shadow-soft hover:shadow-lift disabled:pointer-events-none sm:pr-4"
+              >
+                <Image
+                  src={SAMPLE.thumb}
+                  alt={SAMPLE.alt}
+                  width={360}
+                  height={270}
+                  priority
+                  className="h-16 w-[86px] shrink-0 rounded-xl object-cover sm:h-[72px] sm:w-24"
+                />
+                <span className="min-w-0 flex-1">
+                  <span className="block font-semibold text-ink">No photo handy? Try ours.</span>
+                  <span className="mt-0.5 block text-pretty text-sm leading-snug text-muted">
+                    Two teammates, their name badges and an ID on the table. See what PrePost catches.
+                  </span>
+                </span>
+                <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-respect px-4 py-2 text-sm font-semibold text-paper transition-colors group-hover:bg-respect/90 sm:inline-flex">
+                  {loadingSample ? <LoaderCircle size={15} className="animate-spin" aria-hidden /> : <ScanSearch size={15} aria-hidden />}
+                  {loadingSample ? "Loading" : "Check this photo"}
+                </span>
+              </button>
+            </div>
+
             <div className="relative mx-auto mt-28 max-w-2xl sm:mt-32">
               {/* The brownie peeks over the top edge of the print */}
               <Image

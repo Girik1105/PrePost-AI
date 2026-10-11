@@ -58,7 +58,7 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Main">
-        <a href="/#top" className="rounded-lg" aria-label="SafePost home">
+        <a href="/#top" className="rounded-lg" aria-label="PrePost home">
           <Logo />
         </a>
         <ul className="hidden items-center gap-7 md:flex">

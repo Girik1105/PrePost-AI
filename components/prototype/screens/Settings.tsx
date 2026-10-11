@@ -48,7 +48,7 @@ export default function Settings() {
           />
           <ListRow icon={<RotateCcw className="h-[18px] w-[18px]" aria-hidden />} iconBg="#8A8790" title="See onboarding again" chevron last onClick={() => go("welcome", { mode: "replace" })} />
         </ListGroup>
-        <p className="px-5 pb-6 pt-4 text-center text-[12px] text-[#A29FA8]">SafePost is a hackathon prototype.</p>
+        <p className="px-5 pb-6 pt-4 text-center text-[12px] text-[#A29FA8]">PrePost is a hackathon prototype.</p>
       </ScreenBody>
       <TabBar />
     </>

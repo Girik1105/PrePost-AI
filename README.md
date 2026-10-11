@@ -1,7 +1,7 @@
 <!-- created by kinjal -->
-# SafePost
+# PrePost
 
-**Everything posted online is ink.** SafePost checks photos before they go online. It finds what they give away, blurs it, and explains why.
+**Everything posted online is ink.** PrePost checks photos before they go online. It finds what they give away, blurs it, and explains why.
 
 This is a website: a landing page with a clickable iPhone prototype built in. The "app" is made of HTML/CSS/React screens drawn inside a phone frame on the page. It is not a real iOS app.
 

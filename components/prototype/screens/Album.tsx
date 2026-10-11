@@ -24,7 +24,7 @@ export default function Album() {
           <div className="flex flex-col items-center px-8 pt-6 text-center">
             <Brownie pose="sleepy" size={150} />
             <p className="mt-4 text-[17px] font-semibold">Nothing to fix yet.</p>
-            <p className="mt-1 text-[14px] leading-snug text-[#6B6B73]">When SafePost cleans up a photo, the safe version shows up here.</p>
+            <p className="mt-1 text-[14px] leading-snug text-[#6B6B73]">When PrePost cleans up a photo, the safe version shows up here.</p>
             <div className="mt-5 w-full">
               <Button onClick={() => go("scan", { mode: "tab" })} hint={!driven}>
                 Scan my photos

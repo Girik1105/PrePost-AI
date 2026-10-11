@@ -199,7 +199,7 @@ export function Posted() {
         </article>
       </div>
 
-      {/* SafePost notification */}
+      {/* PrePost notification */}
       <AnimatePresence>
         {banner && (
           <motion.div

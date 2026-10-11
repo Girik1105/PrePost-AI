@@ -18,11 +18,11 @@ export interface Step {
 export const STEPS: Step[] = [
   { id: "gallery", caption: "Open a photo in your gallery.", detail: "Nothing new to learn. You start where you always do, in Photos.", wait: 3200 },
   { id: "viewer", caption: "Tap Share.", detail: "The same button you'd press to send it to a friend or post it.", wait: 2800 },
-  { id: "sheet", caption: "SafePost is right there in the share sheet.", detail: "It sits next to Messages and Instagram, so checking first costs one tap.", wait: 3000 },
+  { id: "sheet", caption: "PrePost is right there in the share sheet.", detail: "It sits next to Messages and Instagram, so checking first costs one tap.", wait: 3000 },
   { id: "scan", caption: "It checks the photo first.", detail: "Location data comes off, then it looks for names, numbers and places.", wait: 0 },
   { id: "review", caption: "You see what it found, and why.", detail: "A house number, a street sign, a family name and a plate. You choose what to hide and how.", wait: 6500 },
   { id: "done", caption: "A clean copy, ready to post.", detail: "The details are baked out of the pixels and the location is stripped. The original stays untouched.", wait: 4200 },
-  { id: "compose", caption: "Post it to Instagram.", detail: "SafePost hands the clean copy straight to Instagram's new post screen.", wait: 5200 },
+  { id: "compose", caption: "Post it to Instagram.", detail: "PrePost hands the clean copy straight to Instagram's new post screen.", wait: 5200 },
   { id: "posted", caption: "Shared. Your address stayed home.", detail: "Same photo, same smile. Nothing in it points to where she lives.", wait: 0 },
 ];
 

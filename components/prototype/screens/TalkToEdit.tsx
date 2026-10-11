@@ -209,7 +209,7 @@ export default function TalkToEdit() {
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             placeholder="Try: blur the street sign"
-            aria-label="Tell SafePost what to hide"
+            aria-label="Tell PrePost what to hide"
             className="h-[36px] min-w-0 flex-1 bg-transparent text-[16px] text-white outline-none placeholder:text-white/40"
           />
         )}
@@ -221,7 +221,7 @@ export default function TalkToEdit() {
         </button>
       </form>
       <p className="px-6 pb-[30px] pt-2 text-center text-[11px] leading-snug text-white/50">
-        SafePost edits objects and text only. It never changes faces or bodies.
+        PrePost edits objects and text only. It never changes faces or bodies.
       </p>
     </div>
   );

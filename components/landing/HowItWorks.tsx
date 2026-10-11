@@ -5,7 +5,7 @@ import SectionHeader from "./SectionHeader";
 
 const STEPS = [
   { img: "step-access", title: "Give photo access once", body: "Pick all photos or just a few. You can change it anytime." },
-  { img: "step-scan", title: "SafePost scans on your phone", body: "New photos get checked quietly in the background." },
+  { img: "step-scan", title: "PrePost scans on your phone", body: "New photos get checked quietly in the background." },
   { img: "step-fix", title: "It blurs, strips location, and explains", body: "Each finding comes with a plain reason and a fix." },
   { img: "step-ready", title: "Your safe version is ready to post", body: "Clean copies wait in your Safe to Share album." },
 ];

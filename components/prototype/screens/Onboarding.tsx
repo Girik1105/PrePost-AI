@@ -55,7 +55,7 @@ export function Access() {
           <Images className="h-8 w-8" aria-hidden />
         </span>
       </div>
-      <h3 className="mt-5 text-center text-[26px] font-bold leading-tight tracking-tight">Let SafePost look at new photos</h3>
+      <h3 className="mt-5 text-center text-[26px] font-bold leading-tight tracking-tight">Let PrePost look at new photos</h3>
       <p className="mt-2 text-center text-[15px] leading-snug text-[#6B6B73]">You choose once. You can change it anytime in Settings.</p>
 
       <div className="mt-6 overflow-hidden rounded-[16px] bg-white" role="radiogroup" aria-label="Photo access">
@@ -121,7 +121,7 @@ export function Kids() {
       <StepPill n={3} />
       <h3 className="mt-7 text-[26px] font-bold leading-tight tracking-tight">Who&apos;s in your photos?</h3>
       <p className="mt-2 text-[15px] leading-snug text-[#6B6B73]">
-        Optional. Add your kids&apos; names so SafePost can catch them on signs, cakes, and captions. Names stay on your phone.
+        Optional. Add your kids&apos; names so PrePost can catch them on signs, cakes, and captions. Names stay on your phone.
       </p>
       <div className="mt-5 flex flex-wrap gap-2">
         {names.map((n) => (

@@ -139,7 +139,7 @@ export default function Hero() {
             Everything posted online is <InkUnderline>ink.</InkUnderline>
           </motion.h1>
           <motion.p {...enter(reduce, 1)} className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink/80 sm:text-xl">
-            SafePost checks your photos before you share them. It finds what they give away, blurs it, and tells you
+            PrePost checks your photos before you share them. It finds what they give away, blurs it, and tells you
             why.
           </motion.p>
           <motion.div {...enter(reduce, 2)} className="mt-9 flex flex-wrap gap-3">

@@ -15,7 +15,7 @@ export default function TalkToEdit() {
             align="left"
             eyebrow="Talk to edit"
             title={<span id="talk-title">Just say what to hide.</span>}
-            intro="Type it or say it. SafePost finds the thing you mean and blurs or removes it. Undo is always one tap away."
+            intro="Type it or say it. PrePost finds the thing you mean and blurs or removes it. Undo is always one tap away."
           />
           <Reveal delay={0.1}>
             <ul className="mt-8 flex flex-wrap gap-2.5" aria-label="Example commands">
@@ -28,7 +28,7 @@ export default function TalkToEdit() {
             </ul>
             <p className="mt-6 flex items-start gap-2 text-sm text-muted">
               <Mic size={16} className="mt-0.5 shrink-0" aria-hidden />
-              SafePost edits objects and text only. It never changes faces or bodies.
+              PrePost edits objects and text only. It never changes faces or bodies.
             </p>
           </Reveal>
         </div>

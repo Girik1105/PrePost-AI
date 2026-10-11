@@ -382,10 +382,10 @@ export default function PhotoChecker() {
     phase === "scanning" ? "Looking closely." : phase === "ready" ? "Here\u2019s your safe version." : "Check it before it\u2019s ink.";
   const sub =
     phase === "scanning"
-      ? "SafePost is reading the photo the way a stranger would. This takes a few seconds."
+      ? "PrePost is reading the photo the way a stranger would. This takes a few seconds."
       : phase === "ready"
         ? "Drag across the photo to see what changed. Save it when you\u2019re happy."
-        : "Drop in a photo. SafePost finds what it gives away, hides it, and hands you a clean copy to post.";
+        : "Drop in a photo. PrePost finds what it gives away, hides it, and hands you a clean copy to post.";
 
   return (
     <div className="relative isolate overflow-clip">

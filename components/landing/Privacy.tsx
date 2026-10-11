@@ -8,7 +8,7 @@ const POINTS = [
   { icon: Lock, text: "Private moments never leave your device." },
   { icon: UserX, text: "No account needed for a basic scan." },
   { icon: HandCoins, text: "We never sell or share your photos or data." },
-  { icon: Wand2, text: "SafePost edits objects and text only, never faces or bodies." },
+  { icon: Wand2, text: "PrePost edits objects and text only, never faces or bodies." },
 ];
 
 export default function Privacy() {

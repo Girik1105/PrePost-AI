@@ -42,7 +42,7 @@ export default function HeroPhone({ className = "" }: { className?: string }) {
     <div className={`relative ${className}`}>
       <Image
         src="/assets/brownie-peek.webp"
-        alt="The SafePost brownie peeking over the phone"
+        alt="The PrePost brownie peeking over the phone"
         width={200}
         height={198}
         priority
@@ -51,7 +51,7 @@ export default function HeroPhone({ className = "" }: { className?: string }) {
       <ProtoProvider initial={{ screen: "lock", notif: false }}>
         <Loop />
         <div onClickCapture={toDemo}>
-          <PhoneFrame statusTone="light" label="SafePost notification on a lock screen. Click to see the share flow.">
+          <PhoneFrame statusTone="light" label="PrePost notification on a lock screen. Click to see the share flow.">
             <LockScreen />
           </PhoneFrame>
         </div>

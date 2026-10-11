@@ -72,7 +72,7 @@ export default function Principles() {
       <SectionHeader
         eyebrow="Humanity 101"
         title={<span id="principles-title">The principles behind it.</span>}
-        intro="Hacks for Humanity asks every project to live at least three of the seven Humanity 101 principles. SafePost is built on four."
+        intro="Hacks for Humanity asks every project to live at least three of the seven Humanity 101 principles. PrePost is built on four."
       />
 
       <div className="mx-auto mt-16 grid max-w-6xl gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">

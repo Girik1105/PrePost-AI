@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Copy, DownloadSimple as Download, DotsThree as Ellipsis, ArrowSquareOut as ExternalLink, DeviceMobile as Smartphone, X as Close } from "@phosphor-icons/react/dist/ssr";
 import { BRAND_PATHS, type BrandId } from "@/lib/brandIcons";
 
-// Websites can't attach a photo to someone else's post composer through a link, and SafePost never
+// Websites can't attach a photo to someone else's post composer through a link, and PrePost never
 // uploads the photo anywhere. So each button hands the photo over the way that platform accepts it:
 // copied to the clipboard (paste with ⌘V) or saved to downloads (upload), then opens the platform.
 type Handoff = "paste" | "upload";
@@ -235,7 +235,7 @@ export default function ShareBar({ safe, fileName, disabled }: { safe: string | 
                   Share your safe photo
                 </h2>
                 <p className="mt-1 text-sm leading-relaxed text-muted">
-                  SafePost never uploads your photo. Pick where it goes, and it&apos;s copied or saved so you can add it there.
+                  PrePost never uploads your photo. Pick where it goes, and it&apos;s copied or saved so you can add it there.
                 </p>
               </div>
               <button

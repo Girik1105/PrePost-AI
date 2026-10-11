@@ -14,7 +14,6 @@ import {
 } from "framer-motion";
 import { Play, UploadSimple as Upload } from "@phosphor-icons/react/dist/ssr";
 import HeroPhone from "@/components/prototype/HeroPhone";
-import InkUnderline from "./InkUnderline";
 
 // One drifting layer. depth scales both the scroll and the mouse movement.
 function Layer({
@@ -132,7 +131,7 @@ export default function Hero() {
             style={enter(0).style}
             className="hero-title-in text-balance font-display text-[2.55rem] font-medium leading-[1.02] tracking-tight text-ink [text-shadow:0_1px_18px_rgb(var(--paper)/0.9)] sm:text-6xl lg:text-7xl"
           >
-            Everything posted online is <InkUnderline>ink.</InkUnderline>
+            Everything posted online is ink.
           </h1>
           <p style={enter(1).style} className="hero-in mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink/80 sm:text-xl">
             PrePost checks your photos before you share them. It finds what they give away, blurs it, and tells you

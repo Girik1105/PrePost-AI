@@ -97,7 +97,7 @@ export default function Footer() {
               {BRAND.name}
             </p>
             <p className="mt-3 max-w-xs text-[15px] leading-relaxed text-[#FBF6EE]/70">
-              A pre-post safety check for your photos. Built for kids, works for everyone.
+              A pre-post safety check for your photos. Built for parents, works for everyone.
             </p>
           </div>
           {COLUMNS.map((c) => (

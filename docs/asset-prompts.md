@@ -63,4 +63,4 @@ To regenerate one: run the prompt in Aside, save the PNG, then
 | sparkles | Three small hand-drawn sparkle doodles (four-pointed stars) in warm coral, golden yellow and lavender, on pure white. |
 | app-icon | A rounded-square tile filled with a soft warm coral-to-peach watercolor wash, a cream rounded shield with a small navy ink drop inside, the brownie mascot peeking from behind the shield. (reference image + STYLE) |
 
-The hand-drawn headline underline is an animated SVG path in code (`components/landing/InkUnderline.tsx`) so it can draw itself on scroll.
+The headline has no underline; the ink idea comes through the copy and the ink-drop art.

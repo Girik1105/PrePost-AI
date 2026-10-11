@@ -175,7 +175,7 @@ export const DEMO_STEPS: DemoStep[] = [
     }),
   },
   {
-    caption: "Built for kids. Works for everyone.",
+    caption: "Built for parents. Works for everyone.",
     detail: "A card number and a boarding pass on a coffee table. Caught and blurred before anyone sees.",
     duration: 13000,
     setup: () => ({ screen: "detail", scene: "coffee", cue: cue("reveal") }),

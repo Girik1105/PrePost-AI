@@ -31,7 +31,7 @@ export default function ForEveryone() {
       <SectionHeader
         eyebrow="For everyone"
         title={<span id="everyone-title">{BRAND.forEveryone}</span>}
-        intro="We started with kids. The same check protects anyone who doesn't want a photo to give away where they are."
+        intro="We started with parents posting their kids. The same check protects anyone who doesn't want a photo to give away where they are."
       />
       <div className="mx-auto mt-16 grid max-w-6xl gap-6 md:grid-cols-3">
         {PERSONAS.map((p, i) => (

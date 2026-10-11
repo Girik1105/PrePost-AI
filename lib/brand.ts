@@ -6,7 +6,7 @@ export const BRAND = {
   name: "PrePost",
   tagline: "Everything posted online is ink.",
   closer: "Everything posted online is ink. Check it first.",
-  forEveryone: "Built for kids. Works for everyone.",
+  forEveryone: "Built for parents. Works for everyone.",
   team: "Brownies in the Sky",
   event: "Hacks for Humanity 2026",
   socialApp: "Snapline", // invented social app used inside the prototype

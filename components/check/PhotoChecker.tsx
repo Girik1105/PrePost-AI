@@ -10,6 +10,8 @@ import { VERDICT_LABEL, scoreWord, type Category, type Verdict } from "@/lib/sce
 import { redact, type Box, type RedactStyle } from "@/lib/redact";
 import HideMethodPicker from "./HideMethodPicker";
 import ShareBar from "./ShareBar";
+import FileDataCard from "./FileDataCard";
+import { readFileData, type FileData } from "@/lib/fileData";
 import { onEraserStatus, preloadEraser, eraserStatus, type EraserStatus } from "@/lib/lama";
 
 interface Item {
@@ -107,6 +109,8 @@ export default function PhotoChecker() {
   const [safe, setSafe] = useState<string | null>(null);
   const [items, setItems] = useState<Item[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
+  // undefined until the file has been read; null when it could not be read.
+  const [fileData, setFileData] = useState<FileData | null | undefined>(undefined);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [style, setStyle] = useState<RedactStyle>("erase");
@@ -250,6 +254,7 @@ export default function PhotoChecker() {
     setSafe(null);
     setItems([]);
     setSummary(null);
+    setFileData(undefined);
     setNotice(null);
     setError(null);
     setTool("compare");
@@ -264,6 +269,8 @@ export default function PhotoChecker() {
         setPhase("error");
         return;
       }
+      // Read what the original file carries before the canvas redraw drops it.
+      const fileDataRead = readFileData(file);
       let bitmap: ImageBitmap;
       try {
         bitmap = await createImageBitmap(file);
@@ -278,6 +285,7 @@ export default function PhotoChecker() {
       // Fetch the on-device eraser while the scan runs, so it is ready when the results land.
       preloadEraser();
       setOriginal(full);
+      setFileData(await fileDataRead);
 
       if (!enabled) {
         setNotice("Automatic scanning is off on this copy of the site. Draw a box over anything you want hidden.");
@@ -647,6 +655,7 @@ export default function PhotoChecker() {
 
             {/* Right column: the score and the plain-language why, then the panel. */}
             <div className="flex min-h-0 flex-col gap-4">
+            {fileData !== undefined && (phase === "scanning" || phase === "ready") && <FileDataCard data={fileData} compact={phase === "ready"} />}
             {summary && after !== null && phase === "ready" && (
               <section aria-label="Summary" className="shrink-0 rounded-[1.5rem] border border-line bg-card px-5 py-4 shadow-soft">
                 <div className="flex items-end justify-between gap-3">

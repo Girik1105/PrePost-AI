@@ -50,7 +50,7 @@ function Mandala({ slug, name, delay }: { slug: string; name: string; delay: num
         viewport={{ once: true, margin: "-25% 0px -25% 0px" }}
         transition={{ duration: 0.6, delay: delay + 1.1 }}
       >
-        <Image src={`/assets/h4h/${slug}-black.png`} alt="" fill sizes="160px" className="h4h-line object-contain" />
+        <Image src={`/assets/h4h/${slug}-black.webp`} alt="" fill sizes="160px" className="h4h-line object-contain" />
       </motion.div>
       <motion.div
         className="absolute inset-0"
@@ -59,7 +59,7 @@ function Mandala({ slug, name, delay }: { slug: string; name: string; delay: num
         viewport={{ once: true, margin: "-25% 0px -25% 0px" }}
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay }}
       >
-        <Image src={`/assets/h4h/${slug}-color.png`} alt={`Humanity 101 ${name} mandala`} fill sizes="160px" className="object-contain" />
+        <Image src={`/assets/h4h/${slug}-color.webp`} alt={`Humanity 101 ${name} mandala`} fill sizes="160px" className="object-contain" />
       </motion.div>
     </div>
   );

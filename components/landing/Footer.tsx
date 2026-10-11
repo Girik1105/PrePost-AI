@@ -93,7 +93,7 @@ export default function Footer() {
         <div className="mt-20 grid gap-10 border-t border-[#FBF6EE]/15 pt-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <p className="flex items-center gap-2 font-display text-2xl font-semibold">
-              <Image sizes="28px" src="/assets/brownie-wave.webp" alt="" width={32} height={37} className="h-8 w-auto" />
+              <Image sizes="28px" src="/assets/brownie-mark.webp" alt="" width={32} height={37} className="h-8 w-auto" />
               {BRAND.name}
             </p>
             <p className="mt-3 max-w-xs text-[15px] leading-relaxed text-[#FBF6EE]/70">

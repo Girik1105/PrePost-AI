@@ -23,7 +23,7 @@ export default function Logo() {
   return (
     <span className="flex items-center gap-2">
       <Image sizes="28px"
-        src="/assets/brownie-wave.webp"
+        src="/assets/brownie-mark.webp"
         alt=""
         width={32}
         height={37}

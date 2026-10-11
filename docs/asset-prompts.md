@@ -64,3 +64,7 @@ To regenerate one: run the prompt in Aside, save the PNG, then
 | app-icon | A rounded-square tile filled with a soft warm coral-to-peach watercolor wash, a cream rounded shield with a small navy ink drop inside, the brownie mascot peeking from behind the shield. (reference image + STYLE) |
 
 The headline has no underline; the ink idea comes through the copy and the ink-drop art.
+
+## Delivery
+
+All shipped images are pre-sized to about twice their largest on-screen width and saved as WebP (quality 80), and `next.config.mjs` sets `images.unoptimized`, so the CDN serves them directly with no on-demand resizing. If you add or regenerate an image, resize it the same way before committing.

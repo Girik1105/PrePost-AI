@@ -24,7 +24,7 @@ export default function Team() {
       <ul className="mx-auto mt-14 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {MEMBERS.map((m, i) => (
           <Reveal key={m.initials} delay={i * 0.06}>
-            <li className="flex h-full flex-col items-center rounded-[28px] border border-line bg-card p-7 text-center shadow-soft">
+            <li className="flex h-full flex-col items-center rounded-[28px] border border-line bg-card p-7 text-center shadow-soft lift">
               <span
                 className={`grid h-20 w-20 place-items-center rounded-full font-display text-2xl font-semibold text-ink ${m.tint}`}
                 aria-hidden

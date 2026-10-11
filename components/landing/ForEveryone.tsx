@@ -36,7 +36,7 @@ export default function ForEveryone() {
       <div className="mx-auto mt-16 grid max-w-6xl gap-6 md:grid-cols-3">
         {PERSONAS.map((p, i) => (
           <Reveal key={p.who} delay={i * 0.08}>
-            <article className="h-full overflow-hidden rounded-[28px] border border-line bg-card shadow-soft">
+            <article className="lift h-full overflow-hidden rounded-[28px] border border-line bg-card shadow-soft">
               <div className="grid h-60 place-items-center bg-gradient-to-b from-paper2 to-card">
                 <Image src={`/assets/${p.img}.webp`} alt={p.alt} width={300} height={340} className="h-52 w-auto" />
               </div>

@@ -73,3 +73,26 @@ div:has(> .compare-range:focus-visible) .compare-knob {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .h4h-line { filter: invert(1) brightness(0.92); }
 }
+
+/* Cards rise a little and their shadow deepens on hover. Only on devices that really hover. */
+.lift {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 2px 4px rgb(30 36 64 / 0.06), 0 24px 48px -16px rgb(30 36 64 / 0.22);
+  }
+}
+/* Buttons sink slightly when pressed */
+.press {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, background-color 0.2s ease;
+}
+@media (hover: hover) {
+  .press:hover { transform: translateY(-2px); }
+}
+.press:active { transform: translateY(0) scale(0.97); transition-duration: 0.08s; }
+@media (prefers-reduced-motion: reduce) {
+  .lift, .press { transition: none; }
+  .lift:hover, .press:hover, .press:active { transform: none; }
+}

@@ -25,7 +25,7 @@ export default function HowItWorks() {
         {STEPS.map((s, i) => (
           <Reveal key={s.title} delay={i * 0.1}>
             <li className="relative flex flex-col items-center text-center">
-              <div className="relative grid h-[184px] w-[184px] place-items-center rounded-full border border-line bg-card shadow-soft">
+              <div className="relative grid h-[184px] w-[184px] place-items-center rounded-full border border-line bg-card shadow-soft lift">
                 <Image src={`/assets/${s.img}.webp`} alt="" width={240} height={240} className="h-32 w-auto" />
               </div>
               <p className="mt-6 text-sm font-semibold text-compassion-deep">Step {i + 1}</p>

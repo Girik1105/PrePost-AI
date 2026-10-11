@@ -35,7 +35,7 @@ export default function Privacy() {
             <ul className="mt-10 grid gap-4 sm:grid-cols-2">
               {POINTS.map((p, i) => (
                 <Reveal key={p.text} delay={i * 0.06}>
-                  <li className="flex h-full items-start gap-3 rounded-2xl bg-card/80 p-4 shadow-soft">
+                  <li className="flex h-full items-start gap-3 rounded-2xl bg-card/80 p-4 shadow-soft lift">
                     <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-integrity text-paper">
                       <p.icon size={19} aria-hidden />
                     </span>

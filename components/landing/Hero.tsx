@@ -43,6 +43,17 @@ function Layer({
   );
 }
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/** First-load entrance: each hero piece rises out of a soft blur, one after another. */
+function enter(reduce: boolean | null, step: number, from: { y?: number; scale?: number } = { y: 18 }) {
+  return {
+    initial: reduce ? false : ({ opacity: 0, filter: "blur(8px)", ...from } as const),
+    animate: { opacity: 1, filter: "blur(0px)", y: 0, scale: 1 },
+    transition: { duration: 0.8, ease: EASE, delay: 0.15 + step * 0.12 },
+  };
+}
+
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
@@ -120,41 +131,44 @@ export default function Hero() {
           >
             <Image src="/assets/ink-drop.webp" alt="" width={374} height={624} className="h-auto w-full" />
           </motion.div>
-          <h1
+          <motion.h1
+            {...enter(reduce, 0)}
             id="hero-title"
             className="text-balance font-display text-[2.55rem] font-medium leading-[1.02] tracking-tight text-ink [text-shadow:0_1px_18px_rgb(var(--paper)/0.9)] sm:text-6xl lg:text-7xl"
           >
             Everything posted online is <InkUnderline>ink.</InkUnderline>
-          </h1>
-          <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink/80 sm:text-xl">
+          </motion.h1>
+          <motion.p {...enter(reduce, 1)} className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink/80 sm:text-xl">
             SafePost checks your photos before you share them. It finds what they give away, blurs it, and tells you
             why.
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
+          </motion.p>
+          <motion.div {...enter(reduce, 2)} className="mt-9 flex flex-wrap gap-3">
             <a
               href="/check"
-              className="inline-flex items-center gap-2 rounded-full bg-compassion px-6 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-full bg-compassion px-6 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift press"
             >
               <Upload size={18} aria-hidden />
               Check a photo
             </a>
             <a
               href="/share"
-              className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/80 px-6 py-3.5 text-base font-semibold text-ink backdrop-blur transition-colors hover:bg-card"
+              className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card/80 px-6 py-3.5 text-base font-semibold text-ink backdrop-blur press hover:bg-card"
             >
               <Play size={18} weight="fill" aria-hidden />
               See it in action
             </a>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="relative mx-auto pt-10">
+        <motion.div {...enter(reduce, 2, { y: 28, scale: 0.97 })} className="relative mx-auto pt-10">
           <HeroPhone className="w-[250px] sm:w-[290px]" />
-        </div>
+        </motion.div>
       </div>
 
       {/* Pencil sketches of everyday people taking photos */}
-      <div className="pointer-events-none relative -z-10 mt-10 flex justify-center px-4 lg:absolute lg:inset-x-0 lg:bottom-0 lg:mt-0 lg:justify-start lg:px-0 lg:pl-[max(2rem,calc((100vw-72rem)/2))]">
+      <motion.div
+        {...enter(reduce, 4, { y: 12 })}
+        className="pointer-events-none relative -z-10 mt-10 flex justify-center px-4 lg:absolute lg:inset-x-0 lg:bottom-0 lg:mt-0 lg:justify-start lg:px-0 lg:pl-[max(2rem,calc((100vw-72rem)/2))]">
         <Image
           src="/assets/hero-people.webp"
           alt="Pencil sketches of a parent photographing a child on a slide, a woman taking a selfie, a teen with a phone and grandparents at a birthday"
@@ -162,7 +176,7 @@ export default function Hero() {
           height={393}
           className="hero-people h-auto w-[620px] max-w-[110%] opacity-90 lg:w-[600px]"
         />
-      </div>
+      </motion.div>
     </section>
   );
 }

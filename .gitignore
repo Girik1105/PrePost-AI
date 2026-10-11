@@ -40,3 +40,4 @@ next-env.d.ts
 
 # playwright-cli output
 /.playwright-cli
+*.swp

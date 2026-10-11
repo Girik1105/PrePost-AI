@@ -487,36 +487,8 @@ export default function PhotoChecker() {
         {(phase === "scanning" || phase === "ready") && original && (
           <div
             ref={workspace}
-            className={`mt-14 grid scroll-mt-20 gap-4 [overflow-anchor:none] lg:h-[calc(100svh-6.5rem)] lg:min-h-[600px] lg:grid-cols-[minmax(0,1fr)_380px] ${
-              summary && phase === "ready" ? "lg:grid-rows-[auto_minmax(0,1fr)]" : "lg:grid-rows-[minmax(0,1fr)]"
-            }`}
+            className={`mt-14 grid scroll-mt-20 gap-4 [overflow-anchor:none] lg:h-[max(780px,calc(100svh-6.5rem))] lg:grid-cols-[minmax(0,1fr)_400px] lg:grid-rows-[minmax(0,1fr)]`}
           >
-            {/* Summary strip: the score and the plain-language why, always in view */}
-            {summary && after !== null && phase === "ready" && (
-              <section
-                aria-label="Summary"
-                className="flex flex-col gap-3 rounded-[1.5rem] border border-line bg-card px-5 py-4 shadow-soft sm:flex-row sm:items-center sm:gap-6 lg:col-span-2"
-              >
-                <div className="shrink-0">
-                  <p className="text-sm font-medium text-muted">Exposure score</p>
-                  <p className="mt-0.5 flex items-baseline gap-2.5 font-display">
-                    <span className={`text-2xl text-muted line-through decoration-2 ${after === summary.exposureScore ? "hidden" : ""}`}>
-                      {summary.exposureScore}
-                    </span>
-                    <span className={`text-5xl font-medium leading-none ${scoreInk(after)}`}>{after}</span>
-                    <span className="text-base text-muted">of 100</span>
-                  </p>
-                  <p className="mt-1 text-sm text-muted">
-                    {after === summary.exposureScore ? scoreWord(after) : `${scoreWord(after)} after your changes`}
-                    {summary.verdict && <span className={`ml-2 font-semibold ${VERDICT_INK[summary.verdict]}`}>{VERDICT_LABEL[summary.verdict]}</span>}
-                  </p>
-                </div>
-                {summary.whyItMatters && (
-                  <p className="text-pretty border-line text-[15px] leading-relaxed text-ink/85 sm:border-l sm:pl-6">{summary.whyItMatters}</p>
-                )}
-              </section>
-            )}
-
             {/* Photo stage: on wide screens the workspace fills the window, so the photo never scrolls away */}
             <div className="flex min-h-0 flex-col rounded-[2rem] border border-line bg-paper2 p-3 shadow-soft sm:p-4">
               {phase === "ready" && (
@@ -536,7 +508,16 @@ export default function PhotoChecker() {
                     ]}
                   />
                   <p className="min-w-0 flex-1 truncate text-sm text-muted sm:text-center">
-                    {tool === "compare" ? "Drag the slider to compare" : "Drag over anything to hide it"}
+                    {tool === "compare" ? (
+                      <span className="inline-flex items-center gap-2">
+                        <span className="font-semibold text-ink">Original</span>
+                        <ChevronsLeftRight size={15} aria-hidden />
+                        <span className="font-semibold text-ink">Safe version</span>
+                        <span className="sr-only">Drag the slider on the photo to compare.</span>
+                      </span>
+                    ) : (
+                      "Drag over anything to hide it"
+                    )}
                   </p>
                   <div className="flex gap-1.5">
                     {[
@@ -559,7 +540,7 @@ export default function PhotoChecker() {
                 </div>
               )}
 
-              <div ref={photoBox} className="flex min-h-0 flex-1 items-center justify-center pt-2.5">
+              <div ref={photoBox} className="flex min-h-0 flex-1 items-center justify-center pt-3">
                 <div className="rounded-[6px] bg-white p-1.5 shadow-lift ring-1 ring-black/5 sm:p-2">
                 <div
                   ref={stage}
@@ -598,8 +579,6 @@ export default function PhotoChecker() {
                         className="absolute inset-0 h-full w-full"
                         style={{ clipPath: `inset(0 ${100 - split}% 0 0)` }}
                       />
-                      <span className="absolute left-3 top-3 rounded-full bg-[#1E2440]/75 px-3 py-1 text-xs font-semibold text-white">Original</span>
-                      <span className="absolute right-3 top-3 rounded-full bg-[#1E2440]/75 px-3 py-1 text-xs font-semibold text-white">Safe version</span>
                       <div className="pointer-events-none absolute inset-y-0 w-[3px] -translate-x-1/2 bg-white shadow-[0_0_0_1px_rgb(30_36_64/0.25)]" style={{ left: `${split}%` }}>
                         <span className="compare-knob absolute top-1/2 left-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-[#1E2440] shadow-lift">
                           <ChevronsLeftRight size={20} aria-hidden />
@@ -666,8 +645,34 @@ export default function PhotoChecker() {
               </div>
             </div>
 
+            {/* Right column: the score and the plain-language why, then the panel. */}
+            <div className="flex min-h-0 flex-col gap-4">
+            {summary && after !== null && phase === "ready" && (
+              <section aria-label="Summary" className="shrink-0 rounded-[1.5rem] border border-line bg-card px-5 py-4 shadow-soft">
+                <div className="flex items-end justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-medium text-muted">Exposure score</p>
+                    <p className="mt-0.5 flex items-baseline gap-2.5 font-display">
+                      <span className={`text-2xl text-muted line-through decoration-2 ${after === summary.exposureScore ? "hidden" : ""}`}>
+                        {summary.exposureScore}
+                      </span>
+                      <span className={`text-5xl font-medium leading-none ${scoreInk(after)}`}>{after}</span>
+                      <span className="text-base text-muted">of 100</span>
+                    </p>
+                  </div>
+                  <p className="text-right text-sm text-muted">
+                    {after === summary.exposureScore ? scoreWord(after) : `${scoreWord(after)} after your changes`}
+                    {summary.verdict && <span className={`block font-semibold ${VERDICT_INK[summary.verdict]}`}>{VERDICT_LABEL[summary.verdict]}</span>}
+                  </p>
+                </div>
+                {summary.whyItMatters && (
+                  <p className="mt-3 text-pretty border-t border-line pt-3 text-sm leading-relaxed text-ink/85">{summary.whyItMatters}</p>
+                )}
+              </section>
+            )}
+
             {/* Side panel */}
-            <aside className="flex min-h-0 flex-col overflow-hidden rounded-[2rem] border border-line bg-card shadow-soft" aria-live="polite">
+            <aside className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[2rem] border border-line bg-card shadow-soft" aria-live="polite">
               {phase === "scanning" ? (
                 <div className="p-6 sm:p-7">
                   <p className="font-display text-2xl font-medium text-ink">Checking your photo</p>
@@ -682,40 +687,61 @@ export default function PhotoChecker() {
                 </div>
               ) : (
                 <>
-                  {/* Only this middle part scrolls; the actions below stay put. */}
-                  <div className="min-h-0 flex-1 overscroll-contain px-5 py-4 sm:px-6 lg:overflow-y-auto">
-                  {notice && <p className="mb-4 rounded-2xl bg-paper2 p-4 text-sm leading-relaxed text-ink/80">{notice}</p>}
+                  {items.length > 0 && (
+                    <div className="flex shrink-0 items-baseline justify-between gap-3 px-5 pb-2 pt-5 sm:px-6">
+                      <h3 className="font-semibold text-ink">What it gives away</h3>
+                      <p className="text-sm text-muted">
+                        {items.filter((i) => i.hidden).length} of {items.length} hidden
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Only the list scrolls; the actions below stay put. */}
+                  <div className="relative min-h-0 flex-1">
+                  <div className="h-full overscroll-contain px-3 pb-3 sm:px-4 lg:overflow-y-auto">
+                  {notice && <p className="mx-2 mb-3 mt-2 rounded-2xl bg-paper2 p-4 text-sm leading-relaxed text-ink/80">{notice}</p>}
 
                   {items.length > 0 && (
-                    <>
-                      <h3 className="font-semibold text-ink">What it gives away</h3>
-                      <p className="mt-1 text-sm text-muted">Click one to show or hide it.</p>
-                      <ul className="-mx-2 mt-2">
+                      <ul>
                         {items.map((it) => {
                           const { Icon, bg } = CATEGORY_ICON[it.category] ?? CATEGORY_ICON.Identity;
+                          const open = active === it.id;
                           return (
-                            <li key={it.id} className="flex items-start gap-1 py-1.5">
+                            <li key={it.id} className="flex items-center gap-1">
                               <button
                                 type="button"
                                 aria-pressed={it.hidden}
                                 aria-label={`Hide ${it.label}`}
+                                aria-describedby={it.reason ? `why-${it.id}` : undefined}
                                 onClick={() => toggle(it.id)}
                                 onMouseEnter={() => setActive(it.id)}
                                 onMouseLeave={() => setActive(null)}
                                 onFocus={() => setActive(it.id)}
                                 onBlur={() => setActive(null)}
-                                className={`flex min-w-0 flex-1 items-start gap-3 rounded-2xl px-2 py-2 text-left transition-colors hover:bg-paper2 ${active === it.id ? "bg-paper2" : ""}`}
+                                className={`flex min-w-0 flex-1 items-start gap-3 rounded-2xl px-2 py-2.5 text-left transition-colors ${open ? "bg-paper2" : "hover:bg-paper2"}`}
                               >
                                 <span
-                                  className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl text-white transition-opacity ${it.hidden ? "" : "opacity-50"}`}
+                                  className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl text-white transition-opacity ${it.hidden ? "" : "opacity-45"}`}
                                   style={{ background: it.manual ? "#7A7781" : bg }}
                                 >
                                   {it.manual ? <SquareDashedMousePointer size={16} aria-hidden /> : <Icon size={16} aria-hidden />}
                                 </span>
-                                <span className="min-w-0 flex-1">
-                                  <span className={`block font-medium leading-snug ${it.hidden ? "text-ink" : "text-muted line-through decoration-1"}`}>{it.label}</span>
+                                <span className="min-w-0 flex-1 pt-1">
+                                  <span className={`block truncate font-medium leading-snug ${it.hidden ? "text-ink" : "text-muted line-through decoration-1"}`}>
+                                    {it.label}
+                                  </span>
+                                  {/* The reason opens with the row, while its outline lights up on the photo. */}
                                   {it.reason && (
-                                    <span className={`mt-0.5 text-sm leading-snug text-muted ${active === it.id ? "block" : "line-clamp-2"}`}>{it.reason}</span>
+                                    <span
+                                      id={`why-${it.id}`}
+                                      className={`grid text-sm leading-snug text-muted transition-[grid-template-rows,opacity] duration-200 motion-reduce:transition-none ${
+                                        open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                                      }`}
+                                    >
+                                      <span className="overflow-hidden">
+                                        <span className="block pt-1">{it.reason}</span>
+                                      </span>
+                                    </span>
                                   )}
                                 </span>
                                 <Knob on={it.hidden} />
@@ -725,7 +751,7 @@ export default function PhotoChecker() {
                                   type="button"
                                   onClick={() => commit(items.filter((x) => x.id !== it.id))}
                                   aria-label={`Delete ${it.label}`}
-                                  className="mt-2.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted hover:bg-ink/5 hover:text-ink"
+                                  className="grid h-8 w-8 shrink-0 place-items-center self-start rounded-full text-muted hover:bg-ink/5 hover:text-ink"
                                 >
                                   <Trash2 size={15} aria-hidden />
                                 </button>
@@ -734,18 +760,20 @@ export default function PhotoChecker() {
                           );
                         })}
                       </ul>
-                    </>
                   )}
-
+                  </div>
+                  {/* Fade at the bottom says there is more to scroll. */}
+                  <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-6 bg-gradient-to-t from-card to-transparent lg:block" />
                   </div>
 
-                  <div className="shrink-0 border-t border-line bg-card px-5 pb-4 pt-4 sm:px-6">
-                  <div className="flex flex-col gap-2.5">
+                  <div className="shrink-0 border-t border-line bg-card px-5 pb-4 pt-5 sm:px-6">
+                  <div className="flex flex-col gap-3.5">
                     <a
                       href={safe ?? undefined}
                       download={`${fileName}-safe.jpg`}
                       aria-disabled={!safe || rendering}
-                      className={`inline-flex items-center justify-center gap-2 rounded-full bg-compassion px-6 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5 ${
+                      title="The saved copy has no location, device or time data."
+                      className={`inline-flex items-center justify-center gap-2 rounded-full bg-compassion px-6 py-3 text-base font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5 ${
                         safe && !rendering ? "" : "pointer-events-none opacity-60"
                       }`}
                     >
@@ -753,30 +781,30 @@ export default function PhotoChecker() {
                       Save safe version
                     </a>
                     <ShareBar safe={safe} fileName={fileName} disabled={!safe || rendering} />
-                    <div className="flex gap-2">
+                    <div className="-mx-2 flex items-center justify-between">
                       <button
                         type="button"
                         onClick={() => input.current?.click()}
-                        className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-card px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-paper2"
+                        className="inline-flex items-center gap-1.5 rounded-full px-2 py-1.5 text-sm font-semibold text-ink transition-colors hover:bg-paper2"
                       >
-                        <ImagePlus size={16} aria-hidden />
-                        Check another
+                        <ImagePlus size={15} aria-hidden />
+                        Check another photo
                       </button>
                       <button
                         type="button"
                         onClick={reset}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-paper2 hover:text-ink"
+                        className="inline-flex items-center gap-1.5 rounded-full px-2 py-1.5 text-sm font-medium text-muted transition-colors hover:bg-paper2 hover:text-ink"
                       >
                         <RotateCcw size={14} aria-hidden />
                         Start over
                       </button>
                     </div>
                   </div>
-                  <p className="mt-3 text-center text-xs leading-relaxed text-muted">The saved copy has no location, device or time data.</p>
                   </div>
                 </>
               )}
             </aside>
+            </div>
           </div>
         )}
       </div>

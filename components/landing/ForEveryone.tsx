@@ -9,19 +9,19 @@ const PERSONAS = [
     img: "persona-mom",
     alt: "A mother hugging her daughter in a park",
     who: "A mom",
-    body: "She shares her daughter's first day of school. SafePost blurs the school sign and the name on the backpack.",
+    body: "She shares her daughter's first day of school. PrePost blurs the school sign and the name on the backpack.",
   },
   {
     img: "persona-walk",
     alt: "A woman walking home under a street lamp",
     who: "A woman walking home",
-    body: "She moved cities to feel safe. SafePost keeps the street sign and the location out of her sunset photo.",
+    body: "She moved cities to feel safe. PrePost keeps the street sign and the location out of her sunset photo.",
   },
   {
     img: "persona-teen",
     alt: "A teen taking a selfie",
     who: "A teen with a phone",
-    body: "She posts her own selfies. SafePost spots the school crest on her hoodie and the address on a package behind her.",
+    body: "She posts her own selfies. PrePost spots the school crest on her hoodie and the address on a package behind her.",
   },
 ];
 
@@ -36,7 +36,7 @@ export default function ForEveryone() {
       <div className="mx-auto mt-16 grid max-w-6xl gap-6 md:grid-cols-3">
         {PERSONAS.map((p, i) => (
           <Reveal key={p.who} delay={i * 0.08}>
-            <article className="h-full overflow-hidden rounded-[28px] border border-line bg-card shadow-soft">
+            <article className="lift h-full overflow-hidden rounded-[28px] border border-line bg-card shadow-soft">
               <div className="grid h-60 place-items-center bg-gradient-to-b from-paper2 to-card">
                 <Image src={`/assets/${p.img}.webp`} alt={p.alt} width={300} height={340} className="h-52 w-auto" />
               </div>

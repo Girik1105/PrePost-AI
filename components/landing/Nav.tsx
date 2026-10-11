@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { List as Menu, Moon, Sun, X } from "@phosphor-icons/react/dist/ssr";
 import Logo from "./Logo";
 
@@ -24,6 +25,10 @@ export default function Nav() {
   const [theme, setTheme] = useState<Theme | null>(null);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const reduce = useReducedMotion();
+  // A thin line under the nav that fills as you read down the page.
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     try {
@@ -48,12 +53,12 @@ export default function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled || open ? "border-b border-line/70 bg-paper/[0.97] shadow-[0_1px_8px_rgb(30_36_64/0.06)]" : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-500 ease-out ${
+        scrolled || open ? "border-line/70 bg-paper/[0.97] shadow-[0_1px_8px_rgb(30_36_64/0.06)]" : "border-transparent bg-transparent shadow-none"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Main">
-        <a href="/#top" className="rounded-lg" aria-label="SafePost home">
+        <a href="/#top" className="rounded-lg" aria-label="PrePost home">
           <Logo />
         </a>
         <ul className="hidden items-center gap-7 md:flex">
@@ -76,7 +81,7 @@ export default function Nav() {
           </button>
           <a
             href="/check"
-            className="hidden rounded-full bg-compassion px-5 py-2.5 text-sm font-semibold text-[#1E2440] shadow-soft transition-transform hover:-translate-y-0.5 sm:inline-block"
+            className="hidden rounded-full bg-compassion px-5 py-2.5 text-sm font-semibold text-[#1E2440] shadow-soft press sm:inline-block"
           >
             Check a photo
           </a>
@@ -105,6 +110,13 @@ export default function Nav() {
             </li>
           ))}
         </ul>
+      )}
+      {!reduce && (
+        <motion.div
+          aria-hidden
+          className={`absolute inset-x-0 -bottom-px h-[2px] origin-left bg-compassion transition-opacity duration-500 ${scrolled && !open ? "opacity-80" : "opacity-0"}`}
+          style={{ scaleX: progress }}
+        />
       )}
     </header>
   );

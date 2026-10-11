@@ -199,7 +199,7 @@ export default function PrototypeSection() {
               Try it.
             </h2>
             <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted lg:mb-8">
-              This is SafePost on a phone. Watch the guided story, or take it for a spin yourself.
+              This is PrePost on a phone. Watch the guided story, or take it for a spin yourself.
             </p>
             <div className="hidden lg:block">
               <Controls sectionRef={ref} />

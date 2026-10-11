@@ -82,7 +82,7 @@ export async function POST(req: Request) {
       ],
     });
     if (response.stop_reason === "refusal" || !response.parsed_output) {
-      return Response.json({ error: "SafePost couldn't check this photo. Try another one." }, { status: 422 });
+      return Response.json({ error: "PrePost couldn't check this photo. Try another one." }, { status: 422 });
     }
     const out = response.parsed_output;
     const clamp = (v: number) => Math.min(1, Math.max(0, v));

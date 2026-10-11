@@ -1,14 +1,14 @@
 //created by kinjal
+import Image from "next/image";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 import { BRAND } from "@/lib/brand";
 
-// TODO(team): replace the placeholder names, roles and initials below with the real team.
 const MEMBERS = [
-  { name: "Team member 1", role: "Frontend and design", line: "CS @ ASU", initials: "T1", tint: "bg-compassion/30" },
-  { name: "Team member 2", role: "Prototype and AI", line: "CS @ ASU", initials: "T2", tint: "bg-reflection/30" },
-  { name: "Team member 3", role: "Child safety research", line: "Medical student", initials: "T3", tint: "bg-integrity/30" },
-  { name: "Team member 4", role: "Story and pitch", line: "Medical student", initials: "T4", tint: "bg-respect/20" },
+  { name: "Begoyim Abdurazakova", role: "Medical student and researcher", img: "member-begoyim" },
+  { name: "Girik Manchanda", role: "Full stack developer and AI prototype", img: "member-girik" },
+  { name: "Iffath Fatima", role: "Pitch and story", img: "member-iffath" },
+  { name: "Kinjal Chatterjee", role: "Frontend and design", img: "member-kinjal" },
 ];
 
 export default function Team() {
@@ -23,17 +23,20 @@ export default function Team() {
       />
       <ul className="mx-auto mt-14 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {MEMBERS.map((m, i) => (
-          <Reveal key={m.initials} delay={i * 0.06}>
-            <li className="flex h-full flex-col items-center rounded-[28px] border border-line bg-card p-7 text-center shadow-soft">
-              <span
-                className={`grid h-20 w-20 place-items-center rounded-full font-display text-2xl font-semibold text-ink ${m.tint}`}
-                aria-hidden
-              >
-                {m.initials}
+          <Reveal key={m.name} delay={i * 0.06}>
+            <li className="group flex h-full flex-col items-center rounded-[28px] border border-line bg-card p-7 text-center shadow-soft lift">
+              {/* The drawings sit in a torn watercolor circle; a round crop keeps just the portrait. */}
+              <span className="block h-32 w-32 overflow-hidden rounded-full bg-[#1E2440] ring-4 ring-paper2">
+                <Image
+                  src={`/assets/${m.img}.webp`}
+                  alt={`Illustrated portrait of ${m.name}`}
+                  width={360}
+                  height={380}
+                  className="h-full w-full scale-[1.24] object-cover transition-transform duration-500 group-hover:scale-[1.3] motion-reduce:transition-none"
+                />
               </span>
               <h3 className="mt-5 font-semibold text-ink">{m.name}</h3>
-              <p className="mt-1 text-sm text-ink/80">{m.role}</p>
-              <p className="mt-1 text-sm text-muted">{m.line}</p>
+              <p className="mt-1 text-sm text-muted">{m.role}</p>
             </li>
           </Reveal>
         ))}

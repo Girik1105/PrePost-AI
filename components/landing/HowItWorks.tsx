@@ -5,7 +5,7 @@ import SectionHeader from "./SectionHeader";
 
 const STEPS = [
   { img: "step-access", title: "Give photo access once", body: "Pick all photos or just a few. You can change it anytime." },
-  { img: "step-scan", title: "SafePost scans on your phone", body: "New photos get checked quietly in the background." },
+  { img: "step-scan", title: "PrePost scans on your phone", body: "New photos get checked quietly in the background." },
   { img: "step-fix", title: "It blurs, strips location, and explains", body: "Each finding comes with a plain reason and a fix." },
   { img: "step-ready", title: "Your safe version is ready to post", body: "Clean copies wait in your Safe to Share album." },
 ];
@@ -25,7 +25,7 @@ export default function HowItWorks() {
         {STEPS.map((s, i) => (
           <Reveal key={s.title} delay={i * 0.1}>
             <li className="relative flex flex-col items-center text-center">
-              <div className="relative grid h-[184px] w-[184px] place-items-center rounded-full border border-line bg-card shadow-soft">
+              <div className="relative grid h-[184px] w-[184px] place-items-center rounded-full border border-line bg-card shadow-soft lift">
                 <Image src={`/assets/${s.img}.webp`} alt="" width={240} height={240} className="h-32 w-auto" />
               </div>
               <p className="mt-6 text-sm font-semibold text-compassion-deep">Step {i + 1}</p>

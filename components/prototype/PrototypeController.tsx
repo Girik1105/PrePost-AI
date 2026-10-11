@@ -116,13 +116,13 @@ function fixedEdits(scene: SceneId, base: Record<string, ObjMode>): Record<strin
 export const DEMO_STEPS: DemoStep[] = [
   {
     caption: "Mom takes three photos at school pickup.",
-    detail: "A few minutes later, SafePost has already checked them on her phone.",
+    detail: "A few minutes later, PrePost has already checked them on her phone.",
     duration: 9000,
     setup: () => ({ screen: "lock", notif: false }),
     run: (api, at) => at(1200, () => api.patch({ notif: true })),
   },
   {
-    caption: "SafePost finds what the photo gives away.",
+    caption: "PrePost finds what the photo gives away.",
     detail: "The school sign, the crest on her shirt, the name tag, and the location hidden in the file.",
     duration: 13000,
     setup: () => ({ screen: "detail", scene: "school", cue: cue("reveal") }),
@@ -146,7 +146,7 @@ export const DEMO_STEPS: DemoStep[] = [
   },
   {
     caption: "Or just say what to hide.",
-    detail: "Talk to edit. Type or say it, and SafePost finds the object and hides it.",
+    detail: "Talk to edit. Type or say it, and PrePost finds the object and hides it.",
     duration: 15000,
     setup: () => ({ screen: "edit", scene: "porch", cue: cue("type", "remove the house number") }),
   },
@@ -164,7 +164,7 @@ export const DEMO_STEPS: DemoStep[] = [
   },
   {
     caption: "It's ready before you even open the app.",
-    detail: "Open your social app and SafePost gently reminds you which version is safe.",
+    detail: "Open your social app and PrePost gently reminds you which version is safe.",
     duration: 12000,
     setup: (s) => ({
       screen: "social",

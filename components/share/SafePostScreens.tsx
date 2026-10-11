@@ -27,7 +27,7 @@ const METHODS: { id: RedactStyle; label: string; I: typeof Eraser; ai?: boolean 
   { id: "erase", label: "Erase", I: Eraser, ai: true },
 ];
 
-/** The SafePost share extension, shown as an iOS page sheet over Photos. */
+/** The PrePost share extension, shown as an iOS page sheet over Photos. */
 export default function SafePostSheet() {
   const { step, go } = useFlow();
   return (

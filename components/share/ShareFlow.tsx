@@ -228,7 +228,7 @@ export default function ShareFlow() {
               Check it from the share button.
             </h1>
             <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted">
-              Pick a photo, tap Share, tap SafePost. It cleans the photo and hands it to Instagram, ready to post.
+              Pick a photo, tap Share, tap PrePost. It cleans the photo and hands it to Instagram, ready to post.
             </p>
             <div className="mt-8 hidden lg:block">{mounted && <Controls />}</div>
           </div>

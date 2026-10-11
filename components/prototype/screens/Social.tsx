@@ -83,7 +83,7 @@ export default function Social() {
         ))}
       </div>
 
-      {/* SafePost banner */}
+      {/* PrePost banner */}
       <AnimatePresence>
         {banner && !picker && (
           <motion.div

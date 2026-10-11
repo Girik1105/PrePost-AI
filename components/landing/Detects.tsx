@@ -39,7 +39,7 @@ const RISKS: Risk[] = [
     note: "Optional. Remove people who didn't ask to be in it.",
     spots: [{ box: { x: 0.008, y: 0.236, w: 0.09, h: 0.166 }, tag: "A neighbor who didn't ask to be in it" }],
   },
-  { label: "Location hidden in the file", note: "Your camera adds GPS on its own. SafePost strips it.", kind: "file" },
+  { label: "Location hidden in the file", note: "Your camera adds GPS on its own. PrePost strips it.", kind: "file" },
   { label: "Private moments", note: "Checked on your phone. Never uploaded.", kind: "private" },
 ];
 
@@ -71,7 +71,7 @@ export default function Detects() {
       <SectionHeader
         eyebrow="What it catches"
         title={<span id="catches-title">How many risks can you spot?</span>}
-        intro="One ordinary selfie on the front steps. SafePost finds what strangers look for, then hides it."
+        intro="One ordinary selfie on the front steps. PrePost finds what strangers look for, then hides it."
         mascot="brownie-magnify"
         mascotAlt="Brownie mascot looking through a magnifying glass"
       />
@@ -83,7 +83,7 @@ export default function Detects() {
             <div role="radiogroup" aria-label="Show the photo" className="flex rounded-full border border-line bg-paper2 p-1">
               {[
                 { v: false, l: "Before" },
-                { v: true, l: "After SafePost" },
+                { v: true, l: "After PrePost" },
               ].map((o) => (
                 <button
                   key={o.l}
@@ -206,11 +206,11 @@ export default function Detects() {
               </motion.span>
             </div>
           </div>
-          <p className="mt-6 text-center font-display text-lg italic text-ink/70">Most people spot two or three. SafePost spots all of them.</p>
+          <p className="mt-6 text-center font-display text-lg italic text-ink/70">Most people spot two or three. PrePost spots all of them.</p>
         </div>
 
         {/* the list */}
-        <ol className="grid gap-1 sm:grid-cols-2 lg:grid-cols-1" aria-label="What SafePost looks for">
+        <ol className="grid gap-1 sm:grid-cols-2 lg:grid-cols-1" aria-label="What PrePost looks for">
           {RISKS.map((r, i) => {
             const on = active === i;
             const pinned = !!r.spots;

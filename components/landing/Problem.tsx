@@ -69,7 +69,7 @@ export default function Problem() {
       <div className="mx-auto mt-16 grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-4">
         {CARDS.map((c, i) => (
           <Reveal key={c.title} delay={i * 0.08}>
-            <article className="group h-full rounded-[28px] border border-line bg-card p-6 shadow-soft transition-transform duration-300 hover:-translate-y-1">
+            <article className="group h-full rounded-[28px] border border-line bg-card p-6 shadow-soft lift">
               <div className={`grid h-48 place-items-center rounded-2xl ${c.tint}`}>
                 {c.art ? (
                   <>

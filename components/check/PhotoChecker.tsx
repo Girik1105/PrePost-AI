@@ -4,12 +4,15 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowsHorizontal as ChevronsLeftRight, DownloadSimple as Download, ImageSquare as ImagePlus, CircleNotch as LoaderCircle, GpsSlash as MapPinOff, ArrowUUpRight as Redo2, ArrowCounterClockwise as RotateCcw, MagnifyingGlass as ScanSearch, Selection as SquareDashedMousePointer, Trash as Trash2, ArrowUUpLeft as Undo2, UploadSimple as Upload } from "@phosphor-icons/react/dist/ssr";
+import { ArrowsHorizontal as ChevronsLeftRight, Camera, Images, DownloadSimple as Download, ImageSquare as ImagePlus, CircleNotch as LoaderCircle, GpsSlash as MapPinOff, ArrowUUpRight as Redo2, ArrowCounterClockwise as RotateCcw, MagnifyingGlass as ScanSearch, Selection as SquareDashedMousePointer, Trash as Trash2, ArrowUUpLeft as Undo2, UploadSimple as Upload } from "@phosphor-icons/react/dist/ssr";
 import { CATEGORY_ICON } from "@/components/prototype/screens/Detail";
 import { VERDICT_LABEL, scoreWord, type Category, type Verdict } from "@/lib/scenes";
 import { redact, type Box, type RedactStyle } from "@/lib/redact";
 import HideMethodPicker from "./HideMethodPicker";
 import ShareBar from "./ShareBar";
+import FileDataCard from "./FileDataCard";
+import { readFileData, type FileData } from "@/lib/fileData";
+import { looksLikePhoto, openPhoto } from "@/lib/openPhoto";
 import { onEraserStatus, preloadEraser, eraserStatus, type EraserStatus } from "@/lib/lama";
 
 interface Item {
@@ -107,6 +110,8 @@ export default function PhotoChecker() {
   const [safe, setSafe] = useState<string | null>(null);
   const [items, setItems] = useState<Item[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
+  // undefined until the file has been read; null when it could not be read.
+  const [fileData, setFileData] = useState<FileData | null | undefined>(undefined);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [style, setStyle] = useState<RedactStyle>("erase");
@@ -122,7 +127,15 @@ export default function PhotoChecker() {
   const [dragging, setDragging] = useState(false);
   const [status, setStatus] = useState(0);
   const [draft, setDraft] = useState<Box | null>(null);
+  // True while a photo is being decoded (HEIC can take a second or two).
+  const [opening, setOpening] = useState(false);
+  // Phones and tablets get "Choose from photos" and "Take a photo" instead of drag and drop.
+  const [touch, setTouch] = useState(false);
+  useEffect(() => {
+    setTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
   const input = useRef<HTMLInputElement>(null);
+  const cameraInput = useRef<HTMLInputElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const workspace = useRef<HTMLDivElement>(null);
   const photoBox = useRef<HTMLDivElement>(null);
@@ -250,6 +263,7 @@ export default function PhotoChecker() {
     setSafe(null);
     setItems([]);
     setSummary(null);
+    setFileData(undefined);
     setNotice(null);
     setError(null);
     setTool("compare");
@@ -259,18 +273,23 @@ export default function PhotoChecker() {
   const start = useCallback(
     async (file: File) => {
       reset();
-      if (!file.type.startsWith("image/") && !/\.(heic|heif)$/i.test(file.name)) {
-        setError("That file isn't a photo. Choose a JPEG, PNG or HEIC image.");
+      if (!looksLikePhoto(file)) {
+        setError("That file isn't a photo. Choose a JPEG, HEIC, PNG or WebP image.");
         setPhase("error");
         return;
       }
+      // Read what the original file carries before the canvas redraw drops it.
+      const fileDataRead = readFileData(file);
       let bitmap: ImageBitmap;
+      setOpening(true);
       try {
-        bitmap = await createImageBitmap(file);
+        bitmap = await openPhoto(file);
       } catch {
-        setError("Your browser can't open this photo format. Try a JPEG or PNG.");
+        setError("This photo couldn't be opened. Try saving it as a JPEG or PNG first.");
         setPhase("error");
         return;
+      } finally {
+        setOpening(false);
       }
       const full = toJpeg(bitmap, 2400, 0.92).url;
       const forScan = toJpeg(bitmap, 1400, 0.85);
@@ -278,6 +297,7 @@ export default function PhotoChecker() {
       // Fetch the on-device eraser while the scan runs, so it is ready when the results land.
       preloadEraser();
       setOriginal(full);
+      setFileData(await fileDataRead);
 
       if (!enabled) {
         setNotice("Automatic scanning is off on this copy of the site. Draw a box over anything you want hidden.");
@@ -362,10 +382,10 @@ export default function PhotoChecker() {
     phase === "scanning" ? "Looking closely." : phase === "ready" ? "Here\u2019s your safe version." : "Check it before it\u2019s ink.";
   const sub =
     phase === "scanning"
-      ? "SafePost is reading the photo the way a stranger would. This takes a few seconds."
+      ? "PrePost is reading the photo the way a stranger would. This takes a few seconds."
       : phase === "ready"
         ? "Drag across the photo to see what changed. Save it when you\u2019re happy."
-        : "Drop in a photo. SafePost finds what it gives away, hides it, and hands you a clean copy to post.";
+        : "Drop in a photo. PrePost finds what it gives away, hides it, and hands you a clean copy to post.";
 
   return (
     <div className="relative isolate overflow-clip">
@@ -386,19 +406,24 @@ export default function PhotoChecker() {
           <p className="mx-auto mt-5 max-w-xl text-pretty text-lg leading-relaxed text-ink/75 sm:text-xl">{sub}</p>
         </header>
 
-        <input
-          ref={input}
-          type="file"
-          accept="image/*,.heic,.heif"
-          className="sr-only"
-          tabIndex={-1}
-          aria-hidden
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) start(f);
-            e.target.value = "";
-          }}
-        />
+        {[input, cameraInput].map((ref, i) => (
+          <input
+            key={i}
+            ref={ref}
+            type="file"
+            accept="image/*,.heic,.heif"
+            // The second input opens the camera straight away on phones.
+            capture={i === 1 ? "environment" : undefined}
+            className="sr-only"
+            tabIndex={-1}
+            aria-hidden
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) start(f);
+              e.target.value = "";
+            }}
+          />
+        ))}
 
         {(phase === "idle" || phase === "error") && (
           <>
@@ -441,24 +466,43 @@ export default function PhotoChecker() {
                     <ImagePlus size={26} aria-hidden />
                   </span>
                   <h2 className="mt-5 font-display text-3xl font-medium text-[#1E2440] sm:text-4xl">
-                    {dragging ? "Let go to check it." : "Drop a photo here"}
+                    {dragging ? "Let go to check it." : touch ? "Add a photo" : "Drop a photo here"}
                   </h2>
-                  <p className="mt-2 text-[#585E78]">or pick one from your device</p>
-                  <button
-                    type="button"
-                    onClick={() => input.current?.click()}
-                    className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#E8846B] px-7 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5"
-                  >
-                    <Upload size={18} aria-hidden />
-                    Choose a photo
-                  </button>
+                  <p className="mt-2 text-[#585E78]">{touch ? "Pick one from your photos or take a new one" : "or pick one from your device"}</p>
+                  <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+                    <button
+                      type="button"
+                      disabled={opening}
+                      onClick={() => input.current?.click()}
+                      className="inline-flex items-center gap-2 rounded-full bg-[#E8846B] px-7 py-3.5 text-base font-semibold text-[#1E2440] shadow-lift transition-transform hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-70"
+                    >
+                      {opening ? (
+                        <LoaderCircle size={18} className="animate-spin" aria-hidden />
+                      ) : touch ? (
+                        <Images size={18} aria-hidden />
+                      ) : (
+                        <Upload size={18} aria-hidden />
+                      )}
+                      {opening ? "Opening your photo" : touch ? "Choose from photos" : "Choose a photo"}
+                    </button>
+                    {touch && !opening && (
+                      <button
+                        type="button"
+                        onClick={() => cameraInput.current?.click()}
+                        className="inline-flex items-center gap-2 rounded-full border border-[#DCCFBC] bg-white px-6 py-3.5 text-base font-semibold text-[#1E2440] transition-colors hover:bg-[#FBF7F1]"
+                      >
+                        <Camera size={18} aria-hidden />
+                        Take a photo
+                      </button>
+                    )}
+                  </div>
                   {error && (
                     <p role="alert" className="mt-5 max-w-md font-medium text-[#9A4230]">
                       {error}
                     </p>
                   )}
                 </div>
-                <p className="mt-4 text-center font-display text-[15px] italic text-[#8A8790]">JPEG, PNG or HEIC</p>
+                <p className="mt-4 text-center font-display text-[15px] italic text-[#8A8790]">JPEG, HEIC, PNG, WebP and more</p>
               </motion.div>
             </div>
 
@@ -647,6 +691,7 @@ export default function PhotoChecker() {
 
             {/* Right column: the score and the plain-language why, then the panel. */}
             <div className="flex min-h-0 flex-col gap-4">
+            {fileData !== undefined && (phase === "scanning" || phase === "ready") && <FileDataCard data={fileData} compact={phase === "ready"} />}
             {summary && after !== null && phase === "ready" && (
               <section aria-label="Summary" className="shrink-0 rounded-[1.5rem] border border-line bg-card px-5 py-4 shadow-soft">
                 <div className="flex items-end justify-between gap-3">

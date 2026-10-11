@@ -8,7 +8,7 @@ const POINTS = [
   { icon: Lock, text: "Private moments never leave your device." },
   { icon: UserX, text: "No account needed for a basic scan." },
   { icon: HandCoins, text: "We never sell or share your photos or data." },
-  { icon: Wand2, text: "SafePost edits objects and text only, never faces or bodies." },
+  { icon: Wand2, text: "PrePost edits objects and text only, never faces or bodies." },
 ];
 
 export default function Privacy() {
@@ -35,7 +35,7 @@ export default function Privacy() {
             <ul className="mt-10 grid gap-4 sm:grid-cols-2">
               {POINTS.map((p, i) => (
                 <Reveal key={p.text} delay={i * 0.06}>
-                  <li className="flex h-full items-start gap-3 rounded-2xl bg-card/80 p-4 shadow-soft">
+                  <li className="flex h-full items-start gap-3 rounded-2xl bg-card/80 p-4 shadow-soft lift">
                     <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-integrity text-paper">
                       <p.icon size={19} aria-hidden />
                     </span>

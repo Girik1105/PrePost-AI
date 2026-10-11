@@ -3,7 +3,7 @@
 // Rename the product here (alternatives: "PostGuard", "Before You Post", "Ask First").
 
 export const BRAND = {
-  name: "SafePost",
+  name: "PrePost",
   tagline: "Everything posted online is ink.",
   closer: "Everything posted online is ink. Check it first.",
   forEveryone: "Built for kids. Works for everyone.",

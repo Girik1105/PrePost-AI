@@ -258,7 +258,7 @@ export const SCENES: Record<SceneId, Scene> = {
     score: null,
     detections: [],
     privateMoment: true,
-    why: "Some moments are just for family. SafePost recognizes them on your phone and never sends them to any AI or server.",
+    why: "Some moments are just for family. PrePost recognizes them on your phone and never sends them to any AI or server.",
     question: "Would Maya be okay with this at 16?",
   },
   picnic: {
